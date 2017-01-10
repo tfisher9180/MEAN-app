@@ -1,0 +1,16 @@
+<form ng-submit="joinLobby(hash)">
+	<div class="modal-header">
+		<button class="close" ng-click="close()"><span>&times;</span></button>
+		<h4 class="modal-title">Join this lobby</h4>
+	</div>
+	<div class="modal-body">
+		<p>You are requesting to join this lobby: <strong>{{ lobby.title }}</strong></p>
+		<p>Please enter your player name below so this lobby owner can contact you:</p>
+		<div class="form-group">
+			<input type="text" name="join_player_name" class="form-control" placeholder="Your player name" ng-required="true" ng-model="join_player_name">
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="submit" class="btn btn-warning" novalidate>Join</button>
+	</div>
+</form>

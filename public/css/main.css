@@ -9,7 +9,12 @@ ul.flex {
 form[name=add-form] label {
   display: block;
 }
-
+.btn-sm {
+  padding: 5px 10px!important;
+}
+strong {
+  font-weight: bold!important;
+}
 
 
 /* LOBBIES */

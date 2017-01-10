@@ -12,7 +12,7 @@
 	Remember, a callback is only executed once its function finishes executing
 */
 
-var app = angular.module('app', ['ngRoute', 'ngCookies', 'firebase', 'angular-toArrayFilter']);
+var app = angular.module('app', ['ngRoute', 'ngCookies', 'firebase', 'angular-toArrayFilter', 'ui.bootstrap']);
 
 // This is executed if a resolve property from the $routeProvider below fails or returns false
 app.run(['$rootScope', '$location', function($rootScope, $location) {
@@ -171,49 +171,78 @@ app.controller('listController', ['$scope', '$http', function($scope, $http) {
 	};
 }]);
 
-app.controller('lobbiesController', ['$scope', '$rootScope', 'firebaseAuth', '$firebaseArray', '$cookies', function($scope, $rootScope, firebaseAuth, $firebaseArray, $cookies) {
-	
+app.controller('lobbiesController', ['$scope', '$rootScope', 'firebaseAuth', '$firebaseArray', '$firebaseObject', '$cookies', '$uibModal', function($scope, $rootScope, firebaseAuth, $firebaseArray, $firebaseObject, $cookies, $uibModal) {
+
 	var dbRef = firebase.database();
 
 	$scope.lobby = {};
 
-	firebaseAuth.$onAuthStateChanged(function(firebaseUser) {
+	firebaseAuth.$onAuthStateChanged(function(firebaseUser) { // gets auth status on controller load
 		if (firebaseUser) {
+			// User is anonymously signed in
 			console.log("Signed in as:", firebaseUser.uid);
+
+			// Set currentUser in root scope to the hash
 			$rootScope.currentUser = firebaseUser.uid;
 
+			// Check if there's an active lobby (cookie)
 			var lobbyCookie = $cookies.getObject('lobby');
+
+			// If there's an active lobby set location in database (index) and activeLobby var to the lobby hash
 			if (lobbyCookie) {
 				$scope.activeLobby = $cookies.getObject('lobby').lobby.lobbyID;
 				$scope.index = $cookies.getObject('lobby').lobby.index;
 			}
 			
+			// Set reference to the lobbies node
+			var lobbiesRef = dbRef.ref('lobbies');
 
-			// user is logged in
-			var lobbiesRef = dbRef.ref('lobbies'); // reference to user/lobbies node
-			var lobbyInfo = $firebaseArray(lobbiesRef); // create obj out of reference
-			
-			$scope.lobbies = lobbyInfo;
+			// Get the lobby data as an array
+			var lobbyInfo = $firebaseArray(lobbiesRef);
+
+			// Get the lobby data as an object for hash
+			var lobbyInfoObj = $firebaseObject(lobbiesRef);
+
+			// Once lobbies retrieved from DB display them in scope
+			/*lobbyInfo.$loaded().then(function(data) {
+				$scope.lobbies = lobbyInfo;
+			});*/
+
+			lobbyInfoObj.$loaded().then(function(data) {
+				$scope.lobbies = lobbyInfoObj;
+			});
 
 			$scope.addLobby = function() {
 				lobbyInfo.$add({
-					date: firebase.database.ServerValue.TIMESTAMP,
-					user: firebaseUser.uid,
-					title: $scope.lobby.title
+					date: firebase.database.ServerValue.TIMESTAMP, // todays date
+					user: firebaseUser.uid, // the current user
+					title: $scope.lobby.title // the lobby title (user input)
 				}).then(function(lobbyRef) {
+					// returns hash that was created
+
+					// store index of created lobby in database for use in several places
+					var lobbyIndex = lobbyInfo.$indexFor(lobbyRef.key);
+
+					// store hash of created lobby in database for use in several places
+					var lobbyHash = lobbyRef.key;
+
 					var obj = {
 						lobby: {
-							user: firebaseUser.uid,
-							lobbyID: lobbyRef.key,
-							index: lobbyInfo.$indexFor(lobbyRef.key)
+							user: firebaseUser.uid, // the current user
+							lobbyID: lobbyHash, // the hash that was created
+							index: lobbyIndex // the location of it in the database
 						}
 					}
-					console.log(obj.lobby);
+
+					// Set an active lobby cookie with the above info in it
 					$cookies.putObject('lobby', obj);
-					$scope.activeLobby = $cookies.getObject('lobby').lobby.lobbyID;
-					$scope.activeUser = $cookies.getObject('lobby').lobby.user;
-					$scope.index = $cookies.getObject('lobby').lobby.index;
-					$scope.lobby.title = ''; // there is a semicolon here, but the semicolon for the above code above in $.add() is below this semicolon, good demonstration of asynchronous code
+
+					// Send some of this data to the view
+					$scope.activeLobby = lobbyHash; // the hash that was created
+					$scope.index = lobbyIndex;
+
+					// Clear the form
+					$scope.lobby.title = '';
 				});
 			};
 
@@ -223,8 +252,63 @@ app.controller('lobbiesController', ['$scope', '$rootScope', 'firebaseAuth', '$f
 				$scope.index = '';
 				$cookies.remove('lobby');
 			};
+
+			$scope.open = function(hash, lobby) {
+				var modalInstance = $uibModal.open({
+					templateUrl: '/views/joinLobbyModal.html',
+					controller: 'joinLobbyModalController',
+					resolve: {
+						hash: function() {
+							return hash;
+						},
+						lobby: function() {
+							return lobby;
+						}
+					}
+				});
+			};
+
 		} else {
 			firebaseAuth.$signInAnonymously();
 		}
 	});
+}]);
+
+app.controller('joinLobbyModalController', ['$rootScope', '$scope', '$firebaseArray', '$firebaseObject', '$uibModalInstance', 'hash', 'lobby', '$cookies', function($rootScope, $scope, $firebaseArray, $firebaseObject, $uibModalInstance, hash, lobby, $cookies) {
+
+	var dbRef = firebase.database();
+
+	$scope.hash = hash;
+	$scope.lobby = lobby;
+
+	$scope.close = function() {
+		$uibModalInstance.close();
+	};
+
+	$scope.joinLobby = function(hash) {
+		console.log(hash);
+		// Reference to the location of the players node in the selected lobby
+		var playersRef = dbRef.ref('lobbies/'+hash+'/players');
+		var lobbyRef = dbRef.ref('lobbies/'+hash);
+
+		var lobbyInfo = $firebaseObject(lobbyRef);
+		var lobbyOwner = lobbyInfo.user;
+
+		// Create array out of reference to add data
+		var playersInfo = $firebaseArray(playersRef);
+
+		// Add data to lobby/players node
+		playersInfo.$add({
+			date: firebase.database.ServerValue.TIMESTAMP, // the current date
+			player_name: $scope.join_player_name, // the player name from the input field
+			user: $scope.currentUser // the hash for the anonymous user
+		}).then(function(ref) {
+			var key = ref.key;
+			var index = playersInfo.$indexFor(key);
+			console.log(key, index);
+
+			$uibModalInstance.close();
+		});
+	};
+
 }]);
