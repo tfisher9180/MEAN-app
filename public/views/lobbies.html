@@ -26,9 +26,21 @@
 	<li class="list-group-item" ng-repeat="(key, lobby) in lobbies | orderBy: 'date'">
 		{{ lobby.title }}
 		<div class="pull-right">
-			<button class="btn btn-sm" ng-hide="currentUser == lobby.lobby_owner" ng-click="open(key)" ng-class="{ 'btn-success': currentUser == players[key][currentUser].uid, 'btn-warning': currentUser != players[key][currentUser].uid }">
-				<i class="fa" ng-class="{ 'fa-check': currentUser == players[key][currentUser].uid, 'fa-user-plus': currentUser != players[key][currentUser].uid }"></i>
+			<button class="btn btn-sm" ng-hide="currentUser == lobby.lobby_owner" ng-click="open(lobby.lobby_owner)" ng-class="{ 'btn-success': currentUser == players[lobby.lobby_owner][currentUser].uid, 'btn-warning': currentUser != players[lobby.lobby_owner][currentUser].uid }">
+				<i class="fa" ng-class="{ 'fa-check': currentUser == players[lobby.lobby_owner][currentUser].uid, 'fa-user-plus': currentUser != players[lobby.lobby_owner][currentUser].uid }"></i>
 			</button>
 		</div>
 	</li>
 </ul>
+<div class="notifications" ng-show="activeLobby">
+	<button class="btn btn-primary">
+		Players <span class="badge">{{ numberPlayers }}</span>
+	</button>
+	<div class="notif-box">
+	<ul class="list-group">
+		<li class="list-group-item" ng-repeat="(key, info) in playerNames">
+			{{ info.player_name }} wants to join your lobby
+		</li>
+	</ul>
+</div>
+</div>

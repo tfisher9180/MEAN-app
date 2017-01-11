@@ -1,0 +1,17 @@
+<div class="card checkinslist">
+	<h1>Players in your Lobby</h1>
+	<p>This is a list of players who have requested to join your lobby</p>
+
+	<ul class="userlist cf">
+		<li ng-repeat="player in players">
+			<div class="checkin">
+				<div class="info">
+					<h2>{{ player.name }}</h2>
+				</div>
+				<div class="date">
+					{{ player.date | date: "MMM d, yy h:mm a" }}
+				</div>
+			</div>
+		</li>
+	</ul>
+</div>

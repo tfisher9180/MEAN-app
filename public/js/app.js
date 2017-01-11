@@ -188,6 +188,7 @@ app.controller('lobbiesController', ['$scope', '$rootScope', 'firebaseAuth', '$f
 
 			var lobbyPlayersRef = rootRef.ref('lobby_players');
 			var lobbyPlayersList = $firebaseObject(lobbyPlayersRef);
+			var lobbyPlayersArray = $firebaseArray(lobbyPlayersRef.child(firebaseUser.uid));
 			$rootScope.players = lobbyPlayersList;
 			
 			if (cookie) {
@@ -205,7 +206,17 @@ app.controller('lobbiesController', ['$scope', '$rootScope', 'firebaseAuth', '$f
 
 			var lobbiesList = $firebaseArray(lobbiesRef);
 			$scope.lobbies = lobbiesList;
-			
+
+			lobbyPlayersArray.$loaded().then(function(data) {
+				$scope.numberPlayers = lobbyPlayersArray.length;
+				$scope.playerNames = lobbyPlayersArray;
+			});
+
+			lobbyPlayersArray.$watch(function(data) {
+				$scope.numberPlayers = lobbyPlayersArray.length;
+				$scope.playerNames = lobbyPlayersArray;
+			});
+
 			$scope.addLobby = function() {
 				lobbyPlayerRef.set({
 					date: firebase.database.ServerValue.TIMESTAMP,
