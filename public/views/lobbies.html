@@ -19,28 +19,16 @@
 	</form>
 </div>
 <div class="text-center">
-	<button type="button" class="btn btn-danger" ng-show="activeLobby" ng-click="removeLobby(index)"><i class="fa fa-trash"></i>  Remove Lobby</button>
+	<button type="button" class="btn btn-danger" ng-show="activeLobby" ng-click="removeLobby()"><i class="fa fa-trash"></i>  Remove Lobby</button>
 </div>
-
-<div class="notification" ng-if="notification == currentUser">
-	<span>Someone has requested to join your lobby</span>
-</div>
-
-<div class="panel panel-default">
-	<div class="panel-heading"></div>
-	<div class="panel-body">
-	<div class="clearfix"></div>
-		<div class="card" ng-repeat="(key, lobby) in lobbies"><!-- key is the hash created by firebase to identify the lobby under "lobbies" and lobby is the list of lobby data -->
-		<div class="clearfix"></div>
-			<span class="text">{{ lobby.title }}</span>
-			<div class="clearfix"></div>
-			<div ng-if="key == hash" style="position: absolute; right: 0; top: 50%; transform: translate(0, -50%);">
-				<span>You've joined this lobby</span>
-			</div>
-			<div ng-if="key != hash" style="position: absolute; right: 0; top: 50%; transform: translate(0, -50%);">
-				<button class="btn btn-warning btn-sm" ng-click="open(key, lobby)"><i class="fa fa-user-plus"></i></button>
-			</div>
-			<div class="clearfix"></div>
+<div class="clearfix"></div>
+<ul class="list-group">
+	<li class="list-group-item" ng-repeat="(key, lobby) in lobbies | orderBy: 'date'">
+		{{ lobby.title }}
+		<div class="pull-right">
+			<button class="btn btn-sm" ng-hide="currentUser == lobby.lobby_owner" ng-click="open(key)" ng-class="{ 'btn-success': currentUser == players[key][currentUser].uid, 'btn-warning': currentUser != players[key][currentUser].uid }">
+				<i class="fa" ng-class="{ 'fa-check': currentUser == players[key][currentUser].uid, 'fa-user-plus': currentUser != players[key][currentUser].uid }"></i>
+			</button>
 		</div>
-	</div>
-</div>
+	</li>
+</ul>

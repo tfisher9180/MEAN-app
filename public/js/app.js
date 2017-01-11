@@ -123,7 +123,7 @@ app.factory('Authentication', ['firebaseAuth', '$rootScope', '$firebaseObject', 
 	};
 }]);
 
-app.controller('userController', ['$scope', '$rootScope', 'Authentication', function($scope, $rootScope, Authentication) {
+app.controller('userController', ['$scope', '$rootScope', 'Authentication', '$cookies', function($scope, $rootScope, Authentication, $cookies) {
 	// Putting functions in the global scope to be executed by view
 	// Each function calls a method from the Authentication service (factory)
 	$scope.login = function() {
@@ -132,6 +132,7 @@ app.controller('userController', ['$scope', '$rootScope', 'Authentication', func
 	// Use $rootScope here so that the block of code in index.html that is outside of ng-view can access this function
 	// This controller will only control all code within the ng-view tags that it injects itself to
 	$rootScope.logout = function() {
+		$cookies.remove('lobby');
 		Authentication.logout();
 	};
 	$scope.register = function() {
@@ -173,97 +174,73 @@ app.controller('listController', ['$scope', '$http', function($scope, $http) {
 
 app.controller('lobbiesController', ['$scope', '$rootScope', 'firebaseAuth', '$firebaseArray', '$firebaseObject', '$cookies', '$uibModal', function($scope, $rootScope, firebaseAuth, $firebaseArray, $firebaseObject, $cookies, $uibModal) {
 
-	var dbRef = firebase.database();
+	var rootRef = firebase.database();
 
 	$scope.lobby = {};
 
+	var cookie = $cookies.getObject('lobby');
+
 	firebaseAuth.$onAuthStateChanged(function(firebaseUser) { // gets auth status on controller load
 		if (firebaseUser) {
-			// User is anonymously signed in
+			
 			console.log("Signed in as:", firebaseUser.uid);
-
-			// Set currentUser in root scope to the hash
 			$rootScope.currentUser = firebaseUser.uid;
 
-			// Check if there's an active lobby (cookie)
-			var lobbyCookie = $cookies.getObject('lobby');
-
-			// If there's an active lobby set location in database (index) and activeLobby var to the lobby hash
-			if (lobbyCookie) {
-				$scope.activeLobby = $cookies.getObject('lobby').lobby.lobbyID;
-				$scope.index = $cookies.getObject('lobby').lobby.index;
-			}
+			var lobbyPlayersRef = rootRef.ref('lobby_players');
+			var lobbyPlayersList = $firebaseObject(lobbyPlayersRef);
+			$rootScope.players = lobbyPlayersList;
 			
-			// Set reference to the lobbies node
-			var lobbiesRef = dbRef.ref('lobbies');
+			if (cookie) {
+				$scope.activeLobby = $cookies.getObject('lobby').lobby.user;
+			}
 
-			// Get the lobby data as an array
-			var lobbyInfo = $firebaseArray(lobbiesRef);
+			var lobbiesRef = rootRef.ref('lobbies');
+			var lobbyPlayerRef = lobbiesRef.child(firebaseUser.uid);
 
-			// Get the lobby data as an object for hash
-			var lobbyInfoObj = $firebaseObject(lobbiesRef);
+			/*var lobbiesList = $firebaseObject(lobbiesRef);
 
-			// Once lobbies retrieved from DB display them in scope
-			/*lobbyInfo.$loaded().then(function(data) {
-				$scope.lobbies = lobbyInfo;
+			lobbiesList.$loaded().then(function() {
+				$scope.lobbies = lobbiesList;
 			});*/
 
-			lobbyInfoObj.$loaded().then(function(data) {
-				$scope.lobbies = lobbyInfoObj;
-			});
-
+			var lobbiesList = $firebaseArray(lobbiesRef);
+			$scope.lobbies = lobbiesList;
+			
 			$scope.addLobby = function() {
-				lobbyInfo.$add({
-					date: firebase.database.ServerValue.TIMESTAMP, // todays date
-					user: firebaseUser.uid, // the current user
-					title: $scope.lobby.title // the lobby title (user input)
-				}).then(function(lobbyRef) {
-					// returns hash that was created
+				lobbyPlayerRef.set({
+					date: firebase.database.ServerValue.TIMESTAMP,
+					title: $scope.lobby.title,
+					lobby_owner: firebaseUser.uid
+				});
 
-					// store index of created lobby in database for use in several places
-					var lobbyIndex = lobbyInfo.$indexFor(lobbyRef.key);
-
-					// store hash of created lobby in database for use in several places
-					var lobbyHash = lobbyRef.key;
-
-					var obj = {
-						lobby: {
-							user: firebaseUser.uid, // the current user
-							lobbyID: lobbyHash, // the hash that was created
-							index: lobbyIndex // the location of it in the database
-						}
+				var cookieObj = {
+					lobby: {
+						user: firebaseUser.uid
 					}
+				};
 
-					// Set an active lobby cookie with the above info in it
-					$cookies.putObject('lobby', obj);
+				$cookies.putObject('lobby', cookieObj);
+				$scope.activeLobby = firebaseUser.uid;
+				$scope.lobby.title = '';
+				
+			};
 
-					// Send some of this data to the view
-					$scope.activeLobby = lobbyHash; // the hash that was created
-					$scope.index = lobbyIndex;
-
-					// Clear the form
-					$scope.lobby.title = '';
+			$scope.removeLobby = function() {
+				var ref = rootRef.ref('lobbies/'+firebaseUser.uid);
+				lobbiesList.$remove(lobbiesList.$getRecord(firebaseUser.uid)).then(function() {
+					$scope.activeLobby = '';
+					$cookies.remove('lobby');
 				});
 			};
 
-			$scope.removeLobby = function(index) {
-				lobbyInfo.$remove(lobbyInfo[index]);
-				$scope.activeLobby = '';
-				$scope.index = '';
-				$cookies.remove('lobby');
-			};
-
-			$scope.open = function(hash, lobby) {
+			$scope.open = function(key) {
 				var modalInstance = $uibModal.open({
 					templateUrl: '/views/joinLobbyModal.html',
 					controller: 'joinLobbyModalController',
 					resolve: {
-						hash: function() {
-							return hash;
-						},
-						lobby: function() {
-							return lobby;
-						}
+						key: function() {
+							return key;
+						}	
 					}
 				});
 			};
@@ -274,41 +251,31 @@ app.controller('lobbiesController', ['$scope', '$rootScope', 'firebaseAuth', '$f
 	});
 }]);
 
-app.controller('joinLobbyModalController', ['$rootScope', '$scope', '$firebaseArray', '$firebaseObject', '$uibModalInstance', 'hash', 'lobby', '$cookies', function($rootScope, $scope, $firebaseArray, $firebaseObject, $uibModalInstance, hash, lobby, $cookies) {
+app.controller('joinLobbyModalController', ['$rootScope', '$scope', '$firebaseArray', '$firebaseObject', '$uibModalInstance', 'key', '$cookies', function($rootScope, $scope, $firebaseArray, $firebaseObject, $uibModalInstance, key, $cookies) {
 
-	var dbRef = firebase.database();
+	var rootRef = firebase.database();
 
-	$scope.hash = hash;
-	$scope.lobby = lobby;
+	$scope.key = key;
 
 	$scope.close = function() {
 		$uibModalInstance.close();
 	};
 
-	$scope.joinLobby = function(hash) {
-		console.log(hash);
-		// Reference to the location of the players node in the selected lobby
-		var playersRef = dbRef.ref('lobbies/'+hash+'/players');
-		var lobbyRef = dbRef.ref('lobbies/'+hash);
+	$scope.joinLobby = function(key) {
+		console.log(key);
 
-		var lobbyInfo = $firebaseObject(lobbyRef);
-		var lobbyOwner = lobbyInfo.user;
+		var lobbyPlayersRef = rootRef.ref('lobby_players');
+		var playerRef = lobbyPlayersRef.child(key).child($rootScope.currentUser);
 
-		// Create array out of reference to add data
-		var playersInfo = $firebaseArray(playersRef);
+		var lobbyPlayersList = $firebaseArray(playerRef);
 
-		// Add data to lobby/players node
-		playersInfo.$add({
-			date: firebase.database.ServerValue.TIMESTAMP, // the current date
-			player_name: $scope.join_player_name, // the player name from the input field
-			user: $scope.currentUser // the hash for the anonymous user
-		}).then(function(ref) {
-			var key = ref.key;
-			var index = playersInfo.$indexFor(key);
-			console.log(key, index);
-
-			$uibModalInstance.close();
+		playerRef.set({
+			date: firebase.database.ServerValue.TIMESTAMP,
+			player_name: $scope.join_player_name,
+			uid: $rootScope.currentUser
 		});
+
+		$uibModalInstance.close();
 	};
 
 }]);
