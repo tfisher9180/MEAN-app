@@ -12,7 +12,7 @@
 	Remember, a callback is only executed once its function finishes executing
 */
 
-var app = angular.module('app', ['ngRoute', 'ngCookies', 'firebase', 'angular-toArrayFilter']);
+var app = angular.module('app', ['ngRoute', 'ngCookies', 'firebase', 'angular-toArrayFilter', 'ui.bootstrap']);
 
 // This is executed if a resolve property from the $routeProvider below fails or returns false
 app.run(['$rootScope', '$location', function($rootScope, $location) {
@@ -123,7 +123,7 @@ app.factory('Authentication', ['firebaseAuth', '$rootScope', '$firebaseObject', 
 	};
 }]);
 
-app.controller('userController', ['$scope', '$rootScope', 'Authentication', function($scope, $rootScope, Authentication) {
+app.controller('userController', ['$scope', '$rootScope', 'Authentication', '$cookies', function($scope, $rootScope, Authentication, $cookies) {
 	// Putting functions in the global scope to be executed by view
 	// Each function calls a method from the Authentication service (factory)
 	$scope.login = function() {
@@ -132,6 +132,7 @@ app.controller('userController', ['$scope', '$rootScope', 'Authentication', func
 	// Use $rootScope here so that the block of code in index.html that is outside of ng-view can access this function
 	// This controller will only control all code within the ng-view tags that it injects itself to
 	$rootScope.logout = function() {
+		$cookies.remove('lobby');
 		Authentication.logout();
 	};
 	$scope.register = function() {
@@ -171,60 +172,110 @@ app.controller('listController', ['$scope', '$http', function($scope, $http) {
 	};
 }]);
 
-app.controller('lobbiesController', ['$scope', '$rootScope', 'firebaseAuth', '$firebaseArray', '$cookies', function($scope, $rootScope, firebaseAuth, $firebaseArray, $cookies) {
-	
-	var dbRef = firebase.database();
+app.controller('lobbiesController', ['$scope', '$rootScope', 'firebaseAuth', '$firebaseArray', '$firebaseObject', '$cookies', '$uibModal', function($scope, $rootScope, firebaseAuth, $firebaseArray, $firebaseObject, $cookies, $uibModal) {
+
+	var rootRef = firebase.database();
 
 	$scope.lobby = {};
 
-	firebaseAuth.$onAuthStateChanged(function(firebaseUser) {
+	var cookie = $cookies.getObject('lobby');
+
+	firebaseAuth.$onAuthStateChanged(function(firebaseUser) { // gets auth status on controller load
 		if (firebaseUser) {
+			
 			console.log("Signed in as:", firebaseUser.uid);
 			$rootScope.currentUser = firebaseUser.uid;
 
-			var lobbyCookie = $cookies.getObject('lobby');
-			if (lobbyCookie) {
-				$scope.activeLobby = $cookies.getObject('lobby').lobby.lobbyID;
-				$scope.index = $cookies.getObject('lobby').lobby.index;
+			var lobbyPlayersRef = rootRef.ref('lobby_players');
+			var lobbyPlayersList = $firebaseObject(lobbyPlayersRef);
+			$rootScope.players = lobbyPlayersList;
+			
+			if (cookie) {
+				$scope.activeLobby = $cookies.getObject('lobby').lobby.user;
 			}
-			
 
-			// user is logged in
-			var lobbiesRef = dbRef.ref('lobbies'); // reference to user/lobbies node
-			var lobbyInfo = $firebaseArray(lobbiesRef); // create obj out of reference
-			
-			$scope.lobbies = lobbyInfo;
+			var lobbiesRef = rootRef.ref('lobbies');
+			var lobbyPlayerRef = lobbiesRef.child(firebaseUser.uid);
 
+			/*var lobbiesList = $firebaseObject(lobbiesRef);
+
+			lobbiesList.$loaded().then(function() {
+				$scope.lobbies = lobbiesList;
+			});*/
+
+			var lobbiesList = $firebaseArray(lobbiesRef);
+			$scope.lobbies = lobbiesList;
+			
 			$scope.addLobby = function() {
-				lobbyInfo.$add({
+				lobbyPlayerRef.set({
 					date: firebase.database.ServerValue.TIMESTAMP,
-					user: firebaseUser.uid,
-					title: $scope.lobby.title
-				}).then(function(lobbyRef) {
-					var obj = {
-						lobby: {
-							user: firebaseUser.uid,
-							lobbyID: lobbyRef.key,
-							index: lobbyInfo.$indexFor(lobbyRef.key)
-						}
+					title: $scope.lobby.title,
+					lobby_owner: firebaseUser.uid
+				});
+
+				var cookieObj = {
+					lobby: {
+						user: firebaseUser.uid
 					}
-					console.log(obj.lobby);
-					$cookies.putObject('lobby', obj);
-					$scope.activeLobby = $cookies.getObject('lobby').lobby.lobbyID;
-					$scope.activeUser = $cookies.getObject('lobby').lobby.user;
-					$scope.index = $cookies.getObject('lobby').lobby.index;
-					$scope.lobby.title = ''; // there is a semicolon here, but the semicolon for the above code above in $.add() is below this semicolon, good demonstration of asynchronous code
+				};
+
+				$cookies.putObject('lobby', cookieObj);
+				$scope.activeLobby = firebaseUser.uid;
+				$scope.lobby.title = '';
+				
+			};
+
+			$scope.removeLobby = function() {
+				var ref = rootRef.ref('lobbies/'+firebaseUser.uid);
+				lobbiesList.$remove(lobbiesList.$getRecord(firebaseUser.uid)).then(function() {
+					$scope.activeLobby = '';
+					$cookies.remove('lobby');
 				});
 			};
 
-			$scope.removeLobby = function(index) {
-				lobbyInfo.$remove(lobbyInfo[index]);
-				$scope.activeLobby = '';
-				$scope.index = '';
-				$cookies.remove('lobby');
+			$scope.open = function(key) {
+				var modalInstance = $uibModal.open({
+					templateUrl: '/views/joinLobbyModal.html',
+					controller: 'joinLobbyModalController',
+					resolve: {
+						key: function() {
+							return key;
+						}	
+					}
+				});
 			};
+
 		} else {
 			firebaseAuth.$signInAnonymously();
 		}
 	});
+}]);
+
+app.controller('joinLobbyModalController', ['$rootScope', '$scope', '$firebaseArray', '$firebaseObject', '$uibModalInstance', 'key', '$cookies', function($rootScope, $scope, $firebaseArray, $firebaseObject, $uibModalInstance, key, $cookies) {
+
+	var rootRef = firebase.database();
+
+	$scope.key = key;
+
+	$scope.close = function() {
+		$uibModalInstance.close();
+	};
+
+	$scope.joinLobby = function(key) {
+		console.log(key);
+
+		var lobbyPlayersRef = rootRef.ref('lobby_players');
+		var playerRef = lobbyPlayersRef.child(key).child($rootScope.currentUser);
+
+		var lobbyPlayersList = $firebaseArray(playerRef);
+
+		playerRef.set({
+			date: firebase.database.ServerValue.TIMESTAMP,
+			player_name: $scope.join_player_name,
+			uid: $rootScope.currentUser
+		});
+
+		$uibModalInstance.close();
+	};
+
 }]);
