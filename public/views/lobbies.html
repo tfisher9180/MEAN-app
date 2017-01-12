@@ -6,32 +6,117 @@
 	All of this code is controlled by the lobbiesController
 -->
 
-<div class="card meetings cf">
-	<div class="textintro">
-		<h1>Add a Lobby</h1>
-		<p>Use the form below to create a lobby</p>
-	</div>
+<!--<div class="card meetings cf">
 	<form name="add-form" ng-submit="addLobby()" ng-hide="activeLobby" novalidate>
 		<div class="form-group">
 			<input type="text" name="title" class="form-control" placeholder="Title of your lobby" ng-model="lobby.title" ng-required="true">
 		</div>
 		<button type="submit" class="btn"><i class="fa fa-plus-circle"></i> Create</button>
 	</form>
-</div>
-<div class="text-center">
+</div>-->
+<!--<div class="text-center">
 	<button type="button" class="btn btn-danger" ng-show="activeLobby" ng-click="removeLobby()"><i class="fa fa-trash"></i>  Remove Lobby</button>
-</div>
-<div class="clearfix"></div>
-<ul class="list-group">
-	<li class="list-group-item" ng-repeat="(key, lobby) in lobbies | orderBy: 'date'">
-		{{ lobby.title }}
-		<div class="pull-right">
-			<button class="btn btn-sm" ng-hide="currentUser == lobby.lobby_owner" ng-click="open(lobby.lobby_owner)" ng-class="{ 'btn-success': currentUser == players[lobby.lobby_owner][currentUser].uid, 'btn-warning': currentUser != players[lobby.lobby_owner][currentUser].uid }">
-				<i class="fa" ng-class="{ 'fa-check': currentUser == players[lobby.lobby_owner][currentUser].uid, 'fa-user-plus': currentUser != players[lobby.lobby_owner][currentUser].uid }"></i>
-			</button>
+</div>-->
+<div class="container narrow">
+	<button id="btn-create" class="btn btn-warning"><!--<i class="fa fa-plus"></i> -->Create</button>
+	<form name="add-form" ng-submit="addLobby()" ng-hide="activeLobby" novalidate>
+		<div class="row">
+			<div class="col-md-3">
+				<div class="form-group">
+					<select name="add-platform" class="form-control" ng-model="lobby.platform" ng-required="true">
+						<option value="{{ undefined }}">Select a platform</option>
+						<option value="ps4">PS4</option>
+						<option value="xbox">XBOX</option>
+						<option value="pc">PC</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="form-group">
+					<select name="group-type" class="form-control" ng-model="lobby.type" ng-required="true">
+						<option value="{{ undefined }}">The group type</option>
+						<option value="LFG">LFG</option>
+						<option value="LFM">LFM</option>
+					</select>
+				</div>
+			</div>
 		</div>
-	</li>
-</ul>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="form-group">
+					<input type="text" name="title" ng-model="lobby.title" class="form-control" ng-required="true" placeholder="Title of your lobby">
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="form-group">
+					<textarea class="form-control" name="description" ng-model="lobby.description" rows="5" placeholder="A little more detail on what you're looking for ..."></textarea>
+				</div>
+			</div>
+		</div>
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" name="mic" value="true" ng-model="lobby.mic">Mic
+			</label>
+		</div>
+		<button type="submit" class="btn btn-warning">Submit</button>
+	</form>
+	<ul class="list-group lobby-list">
+		<li class="list-group-item" ng-repeat="(key, lobby) in lobbies | orderBy: 'date'">
+			<div class="row lobby">
+				<div class="col-xs-1 platform-wrapper">
+					<div class="platform-icon text-center">
+						<div class="icon-bg">
+							<img ng-src="../img/platform_icons/{{ lobby.platform }}.png" class="img-responsive" />
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-2 text-center">
+					<div class="group-type">
+						<span>{{ lobby.group_type }}</span>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="lobby-title">
+								<span>{{ lobby.title }}</span>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="lobby-description">
+								<span class="text-muted">{{ lobby.description }}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-1 text-center">
+					<div class="mic">
+						<i class="fa fa-microphone fa-2x"></i>
+					</div>
+				</div>
+				<div class="col-xs-2 text-center">
+					<div class="actions">
+						<i class="fa fa-envelope fa-2x"></i>
+						<i class="fa fa-user-plus fa-2x"></i>
+					</div>
+				</div>
+			</div>
+			<div class="pull-right">
+				<button class="btn btn-sm" ng-hide="currentUser == lobby.lobby_owner" ng-click="open(lobby.lobby_owner)" ng-class="{ 'btn-success': currentUser == players[lobby.lobby_owner][currentUser].uid, 'btn-warning': currentUser != players[lobby.lobby_owner][currentUser].uid }">
+					<i class="fa" ng-class="{ 'fa-check': currentUser == players[lobby.lobby_owner][currentUser].uid, 'fa-user-plus': currentUser != players[lobby.lobby_owner][currentUser].uid }"></i>
+				</button>
+			</div>
+		</li>
+	</ul>
+</div>
+
+
+
+
 <div class="notifications" ng-show="activeLobby">
 	<button class="btn btn-primary">
 		Players <span class="badge">{{ numberPlayers }}</span>

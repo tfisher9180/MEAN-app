@@ -140,38 +140,6 @@ app.controller('userController', ['$scope', '$rootScope', 'Authentication', '$co
 	};
 }]);
 
-app.controller('listController', ['$scope', '$http', function($scope, $http) {
-	$scope.formData = {};
-
-	$http.get('/api/lobbies')
-		.then(function(res) {
-			$scope.lobbies = res.data;
-			$scope.formData.platform = 'PS4';
-			$scope.formData.mode = 'multiplayer';
-		}, function(res) {
-			console.log('Error: ' + res);
-		});
-
-	$scope.createLobby = function() {
-		$http.post('/api/lobbies', $scope.formData)
-			.then(function(res) {
-				$scope.formData = {};
-				$scope.lobbies = res.data;
-			}, function(res) {
-				console.log('Error ' + res);
-			});
-	};
-
-	$scope.deleteLobby = function(id) {
-		$http.delete('/api/lobbies/' + id)
-			.then(function(res) {
-				$scope.lobbies = res.data;
-			}, function(res) {
-				console.log('Error ' + res);
-			});
-	};
-}]);
-
 app.controller('lobbiesController', ['$scope', '$rootScope', 'firebaseAuth', '$firebaseArray', '$firebaseObject', '$cookies', '$uibModal', function($scope, $rootScope, firebaseAuth, $firebaseArray, $firebaseObject, $cookies, $uibModal) {
 
 	var rootRef = firebase.database();
@@ -217,10 +185,15 @@ app.controller('lobbiesController', ['$scope', '$rootScope', 'firebaseAuth', '$f
 				$scope.playerNames = lobbyPlayersArray;
 			});
 
+			$scope.lobby.mic = false;
 			$scope.addLobby = function() {
 				lobbyPlayerRef.set({
 					date: firebase.database.ServerValue.TIMESTAMP,
+					platform: $scope.lobby.platform,
+					group_type: $scope.lobby.type,
 					title: $scope.lobby.title,
+					description: $scope.lobby.description,
+					mic: $scope.lobby.mic,
 					lobby_owner: firebaseUser.uid
 				});
 

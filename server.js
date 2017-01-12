@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 var bodyParser = require('body-parser');
 var path = require('path');
 
-mongoose.connect('mongodb://user:user@ds145168.mlab.com:45168/the_partridge_project');
+//mongoose.connect('mongodb://user:user@ds145168.mlab.com:45168/the_partridge_project');
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ 'extended': 'true' }));

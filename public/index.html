@@ -36,14 +36,13 @@
 	<body>
 		<header>
 			<!-- Able to access currentUser here because of $rootScope -->
-			<nav class="cf" ng-include="'views/nav.html'"></nav>
+			<!--<nav class="cf" ng-include="'views/nav.html'"></nav>-->
 		</header>
 		<div class="page">
-			<div class="userinfo" ng-show="currentUser">
-				<!-- The reason we're able to access the currentUser object here is because we used $rootScope (this block of code is outside of ng-view, but within ng-app) -->
+			<!--<div class="userinfo" ng-show="currentUser">
 				<span class="userinfo">Hi {{ currentUser }}</span>
 				<a ng-href="/login" ng-click="logout()">logout</a>
-			</div>
+			</div>-->
 			<main class="cf" ng-view></main>
 		</div>
 
