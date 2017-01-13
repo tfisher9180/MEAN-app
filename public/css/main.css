@@ -18,7 +18,7 @@ textarea {
 .lobby-list {
   margin-top: 10px;
 }
-#btn-create {
+#btn-create, #btn-remove {
   border-radius: 4px;
   border-bottom-right-radius: 1px;
   border-bottom-left-radius: 1px;
@@ -55,4 +55,38 @@ textarea {
 form[name="add-form"] {
   display: none;
   margin-top: 10px;
+}
+.notifications {
+  position: fixed;
+  bottom: 0px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  height: auto;
+  max-height: 200px;
+  overflow-y: auto;
+}
+.notifications button {
+  padding-left: 200px;
+  padding-right: 200px;
+  background-color: rgba(20, 20, 20, 0.6);
+  border-color: rgba(0, 0, 0, 0.6);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.notifications button:hover, .notifications button:focus, .notifications button:active {
+  background-color: rgba(20, 20, 20, 0.6)!important;
+  border-color: rgba(0, 0, 0, 0.6)!important;
+}
+.notif-box ul {
+  margin-bottom: 20px;
+  display: none;
+}
+.filter-platforms label {
+  background-color: rgba(20, 20, 20, 0.6);
+  border-color: rgba(0, 0, 0, 0.6);
+  color: rgba(255, 255, 255, 0.75);
+  padding: 10px 20px 10px 20px;
+}
+.filter-platforms label:hover {
+  color: #fff;
 }

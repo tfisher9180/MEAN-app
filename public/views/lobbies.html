@@ -18,7 +18,21 @@
 	<button type="button" class="btn btn-danger" ng-show="activeLobby" ng-click="removeLobby()"><i class="fa fa-trash"></i>  Remove Lobby</button>
 </div>-->
 <div class="container narrow">
-	<button id="btn-create" class="btn btn-warning"><!--<i class="fa fa-plus"></i> -->Create</button>
+	<div class="pull-left">
+		<button ng-show="activeLobby" ng-click="removeLobby()" id="btn-remove" class="btn btn-danger">Remove</button>
+		<button ng-hide="activeLobby" id="btn-create" class="btn btn-warning"><!--<i class="fa fa-plus"></i> -->Create</button>
+	</div>
+	<div ng-controller="labelBtnController">
+		<div class="pull-right">
+			<div class="btn-group filter-platforms">
+				<label class="btn" ng-model="filter_platform.all" uib-btn-radio="'All'">All</label>
+				<label class="btn" ng-model="filter_platform.ps4" uib-btn-radio="'PS4'">PS4</label>
+				<label class="btn" ng-model="filter_platform.xbox" uib-btn-radio="XBOX">XBOX</label>
+				<label class="btn" ng-model="filter_platform.pc" uib-btn-radio="PC">PC</label>
+			</div>
+		</div>
+	</div>
+	<div class="clearfix"></div>
 	<form name="add-form" ng-submit="addLobby()" ng-hide="activeLobby" novalidate>
 		<div class="row">
 			<div class="col-md-3">
@@ -63,7 +77,7 @@
 		<button type="submit" class="btn btn-warning">Submit</button>
 	</form>
 	<ul class="list-group lobby-list">
-		<li class="list-group-item" ng-repeat="(key, lobby) in lobbies | orderBy: 'date'">
+		<li class="list-group-item" ng-repeat="(key, lobby) in lobbies | orderBy: 'lobby.date'">
 			<div class="row lobby">
 				<div class="col-xs-1 platform-wrapper">
 					<div class="platform-icon text-center">
@@ -95,37 +109,30 @@
 				</div>
 				<div class="col-xs-1 text-center">
 					<div class="mic">
-						<i class="fa fa-microphone fa-2x"></i>
+						<i ng-class="{ 'fa-microphone': lobby.mic == true, '': lobby.mic == false }" class="fa fa-2x"></i>
 					</div>
 				</div>
 				<div class="col-xs-2 text-center">
 					<div class="actions">
-						<i class="fa fa-envelope fa-2x"></i>
-						<i class="fa fa-user-plus fa-2x"></i>
+						<button class="btn btn-sm" ng-hide="currentUser == lobby.lobby_owner" ng-click="open(lobby.lobby_owner)" ng-class="{ 'btn-success': currentUser == players[lobby.lobby_owner][currentUser].uid, 'btn-warning': currentUser != players[lobby.lobby_owner][currentUser].uid }">
+							<i class="fa fa-2x" ng-class="{ 'fa-check': currentUser == players[lobby.lobby_owner][currentUser].uid, 'fa-user-plus': currentUser != players[lobby.lobby_owner][currentUser].uid }"></i>
+						</button>
 					</div>
 				</div>
-			</div>
-			<div class="pull-right">
-				<button class="btn btn-sm" ng-hide="currentUser == lobby.lobby_owner" ng-click="open(lobby.lobby_owner)" ng-class="{ 'btn-success': currentUser == players[lobby.lobby_owner][currentUser].uid, 'btn-warning': currentUser != players[lobby.lobby_owner][currentUser].uid }">
-					<i class="fa" ng-class="{ 'fa-check': currentUser == players[lobby.lobby_owner][currentUser].uid, 'fa-user-plus': currentUser != players[lobby.lobby_owner][currentUser].uid }"></i>
-				</button>
 			</div>
 		</li>
 	</ul>
 </div>
-
-
-
 
 <div class="notifications" ng-show="activeLobby">
 	<button class="btn btn-primary">
 		Players <span class="badge">{{ numberPlayers }}</span>
 	</button>
 	<div class="notif-box">
-	<ul class="list-group">
-		<li class="list-group-item" ng-repeat="(key, info) in playerNames">
-			{{ info.player_name }} wants to join your lobby
-		</li>
-	</ul>
-</div>
+		<ul class="list-group">
+			<li class="list-group-item" ng-repeat="(key, info) in playerNames">
+				{{ info.player_name }} wants to join your lobby
+			</li>
+		</ul>
+	</div>
 </div>

@@ -215,6 +215,7 @@ app.controller('lobbiesController', ['$scope', '$rootScope', 'firebaseAuth', '$f
 					$scope.activeLobby = '';
 					$cookies.remove('lobby');
 				});
+				rootRef.ref('lobby_players').child(firebaseUser.uid).remove();
 			};
 
 			$scope.open = function(key) {
@@ -261,5 +262,9 @@ app.controller('joinLobbyModalController', ['$rootScope', '$scope', '$firebaseAr
 
 		$uibModalInstance.close();
 	};
+
+}]);
+
+app.controller('labelBtnController', ['$scope', function($scope) {
 
 }]);
