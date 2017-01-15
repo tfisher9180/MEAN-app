@@ -190,6 +190,7 @@ app.controller('lobbiesController', ['$scope', '$rootScope', 'firebaseAuth', '$f
 				lobbyPlayerRef.set({
 					date: firebase.database.ServerValue.TIMESTAMP,
 					platform: $scope.lobby.platform,
+					game_mode: $scope.lobby.game_mode,
 					group_type: $scope.lobby.type,
 					title: $scope.lobby.title,
 					description: $scope.lobby.description,
@@ -265,6 +266,11 @@ app.controller('joinLobbyModalController', ['$rootScope', '$scope', '$firebaseAr
 
 }]);
 
-app.controller('labelBtnController', ['$scope', function($scope) {
+app.controller('labelBtnController', ['$rootScope', '$scope', function($rootScope, $scope) {
+	$rootScope.filter_platform = '';
 
+	/* Need this function ui-bootstrap buttons to work */
+	$scope.setPlatform = function(platform) {
+		$rootScope.filter_platform = platform;
+	};
 }]);
