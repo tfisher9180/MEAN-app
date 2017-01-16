@@ -6,41 +6,160 @@
 	All of this code is controlled by the lobbiesController
 -->
 
-<div class="card meetings cf">
-	<div class="textintro">
-		<h1>Add a Lobby</h1>
-		<p>Use the form below to create a lobby</p>
-	</div>
+<!--<div class="card meetings cf">
 	<form name="add-form" ng-submit="addLobby()" ng-hide="activeLobby" novalidate>
 		<div class="form-group">
 			<input type="text" name="title" class="form-control" placeholder="Title of your lobby" ng-model="lobby.title" ng-required="true">
 		</div>
 		<button type="submit" class="btn"><i class="fa fa-plus-circle"></i> Create</button>
 	</form>
-</div>
-<div class="text-center">
+</div>-->
+<!--<div class="text-center">
 	<button type="button" class="btn btn-danger" ng-show="activeLobby" ng-click="removeLobby()"><i class="fa fa-trash"></i>  Remove Lobby</button>
+</div>-->
+<div ng-controller="labelBtnController">
+	<div class="pull-right">
+		<div class="btn-group filter-platforms">
+			<label class="btn active" ng-model="filter_platform" uib-btn-radio="''" ng-click="setPlatform(filter_platform)">All</label>
+			<label class="btn" ng-model="filter_platform" uib-btn-radio="'ps4'" ng-click="setPlatform(filter_platform)">PS4</label>
+			<label class="btn" ng-model="filter_platform" uib-btn-radio="'xbox'" ng-click="setPlatform(filter_platform)">XBOX</label>
+			<label class="btn" ng-model="filter_platform" uib-btn-radio="'pc'" ng-click="setPlatform(filter_platform)">PC</label>
+		</div>
+	</div>
 </div>
 <div class="clearfix"></div>
-<ul class="list-group">
-	<li class="list-group-item" ng-repeat="(key, lobby) in lobbies | orderBy: 'date'">
-		{{ lobby.title }}
-		<div class="pull-right">
-			<button class="btn btn-sm" ng-hide="currentUser == lobby.lobby_owner" ng-click="open(lobby.lobby_owner)" ng-class="{ 'btn-success': currentUser == players[lobby.lobby_owner][currentUser].uid, 'btn-warning': currentUser != players[lobby.lobby_owner][currentUser].uid }">
-				<i class="fa" ng-class="{ 'fa-check': currentUser == players[lobby.lobby_owner][currentUser].uid, 'fa-user-plus': currentUser != players[lobby.lobby_owner][currentUser].uid }"></i>
-			</button>
+<form name="add-form" ng-submit="addLobby()" ng-hide="activeLobby" novalidate>
+	<div class="row">
+		<div class="col-md-3">
+			<div class="form-group">
+				<select name="add-platform" class="form-control" ng-model="lobby.platform" ng-required="true">
+					<option value="{{ undefined }}">Select a platform</option>
+					<option value="ps4">PS4</option>
+					<option value="xbox">XBOX</option>
+					<option value="pc">PC</option>
+				</select>
+			</div>
 		</div>
-	</li>
-</ul>
+		<div class="col-md-3">
+			<div class="form-group">
+				<select name="group-type" class="form-control" ng-model="lobby.type" ng-required="true">
+					<option value="{{ undefined }}">The group type</option>
+					<option value="LFG">LFG</option>
+					<option value="LFM">LFM</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="form-group">
+				<input type="text" name="title" ng-model="lobby.title" class="form-control" ng-required="true" placeholder="Title of your lobby">
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="form-group">
+				<textarea class="form-control" name="description" ng-model="lobby.description" rows="5" placeholder="A little more detail on what you're looking for ..."></textarea>
+			</div>
+		</div>
+	</div>
+	<div class="checkbox">
+		<label>
+			<input type="checkbox" name="mic" value="true" ng-model="lobby.mic">Mic
+		</label>
+	</div>
+	<button type="submit" class="btn btn-warning">Submit</button>
+</form>
+<div class="row">
+	<div class="left-col col-md-3">
+		<div class="add-lobby">
+			<button ng-show="activeLobby" ng-click="removeLobby()" id="btn-remove" class="btn">Remove</button>
+			<button ng-hide="activeLobby" id="btn-create" class="btn center-block"><!--<i class="fa fa-plus"></i> -->Create Lobby</button>
+		</div>
+		<div class="filter-lobbies">
+			<div class="container-fluid">
+				<h3 class="text-center">Filter Lobbies</h3>
+				<form>
+					<div class="form-group">
+						<label class="control-label">Group Type</label>
+						<select name="filter-group-type" class="form-control" ng-model="filter_group_type">
+							<option value="{{ undefined }}">All</option>
+							<option value="lfg">LFG</option>
+							<option value="lfm">LFM</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label class="control-label">Game Mode</label>
+						<select name="filter-game-mode" class="form-control" ng-model="filter_game_mode">
+							<option value="{{ undefined }}">All</option>
+							<option value="multiplayer">Multiplayer</option>
+							<option value="zombies">Zombies</option>
+						</select>
+					</div>
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" name="filter-mic" ng-true-value="true" ng-false-value="{{ undefined }}"ng-model="filter_mic">Mic
+						</label>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="right-col col-md-9">
+		<ul class="list-group lobby-list">
+			<li class="list-group-item" ng-repeat="(key, lobby) in lobbies | filter: filter_platform | filter: filter_group_type | filter: filter_game_mode | filter: filter_mic | orderBy: 'lobby.date'">
+				<div class="panel panel-default lobby-panel">
+					<div class="panel-body vertical-flex">
+						<div class="col-xs-1">
+							<div class="platform-icon text-center">
+								<div class="icon-bg">
+									<img ng-src="../img/platform_icons/{{ lobby.platform }}.png" class="img-responsive" />
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-2 text-center">
+							<span class="label label-info">{{ lobby.group_type }}</span>
+						</div>
+						<div class="col-xs-6">
+							<div class="row">
+								<div class="col-xs-12">
+									<div class="lobby-title" style="display: inline-block; vertical-align: middle;">
+										<span>{{ lobby.title }}</span>
+									</div>&nbsp;&nbsp;
+									<span class="label label-primary game-mode" style="vertical-align: middle">{{ lobby.game_mode }}</span>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-12">
+									<div class="lobby-description">
+										<span class="text-muted">{{ lobby.description }}</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-3 text-center">
+							<span class="lobby-owner"><span class="glyphicon glyphicon-fire"></span> VibesTF</span>
+							<div class="actions text-center">
+								<label class="label label-danger" ng-hide="currentUser == lobby.lobby_owner" ng-click="open(lobby.lobby_owner)" ng-class="{ 'btn-success': currentUser == players[lobby.lobby_owner][currentUser].uid, 'btn-warning': currentUser != players[lobby.lobby_owner][currentUser].uid }"><i class="fa" ng-class="{ 'fa-check': currentUser == players[lobby.lobby_owner][currentUser].uid, 'fa-sign-in': currentUser != players[lobby.lobby_owner][currentUser].uid }"></i>  {{ currentUser == players[lobby.lobby_owner][currentUser].uid ? '' : 'Join Lobby' }}</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+
 <div class="notifications" ng-show="activeLobby">
 	<button class="btn btn-primary">
 		Players <span class="badge">{{ numberPlayers }}</span>
 	</button>
 	<div class="notif-box">
-	<ul class="list-group">
-		<li class="list-group-item" ng-repeat="(key, info) in playerNames">
-			{{ info.player_name }} wants to join your lobby
-		</li>
-	</ul>
-</div>
+		<ul class="list-group">
+			<li class="list-group-item" ng-repeat="(key, info) in playerNames">
+				{{ info.player_name }} wants to join your lobby
+			</li>
+		</ul>
+	</div>
 </div>
