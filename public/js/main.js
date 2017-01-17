@@ -7,8 +7,8 @@ $(document).ready(function() {
 		}
 	});
 
-	$('#btn-create').on('click', function() {
-		$('form[name="add-form"]').slideToggle();
+	$('.nav-tabs a').click(function(e) {
+		e.preventDefault();
 	});
 
 });

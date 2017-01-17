@@ -231,6 +231,13 @@ app.controller('lobbiesController', ['$scope', '$rootScope', 'firebaseAuth', '$f
 				});
 			};
 
+			$scope.openAddModal = function() {
+				var modalInstance = $uibModal.open({
+					templateUrl: '/views/addNewModal.html',
+					controller: 'addNewModalController'
+				});
+			};
+
 		} else {
 			firebaseAuth.$signInAnonymously();
 		}
@@ -263,6 +270,16 @@ app.controller('joinLobbyModalController', ['$rootScope', '$scope', '$firebaseAr
 
 		$uibModalInstance.close();
 	};
+
+}]);
+
+app.controller('addNewModalController', ['$scope','$uibModalInstance', function($scope, $uibModalInstance) {
+
+	$scope.lobby = {};
+
+	$scope.close = function() {
+		$uibModalInstance.close();
+	}
 
 }]);
 

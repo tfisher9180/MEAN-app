@@ -10,6 +10,7 @@
     "angular-toArrayFilter": "^1.0.1",
     "angularfire": "^2.2.0",
     "angular-cookies": "^1.6.1",
-    "angular-bootstrap": "^2.4.0"
+    "angular-bootstrap": "^2.4.0",
+    "ngInfiniteScroll": "1.0.0"
   }
 }
