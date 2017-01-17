@@ -1,16 +1,18 @@
-<form ng-submit="joinLobby(key)">
+<form id="join-lobby-modal" name="joinForm" class="form-horizontal modal-form" ng-submit="joinLobby(key)" novalidate>
 	<div class="modal-header">
-		<button class="close" ng-click="close()"><span>&times;</span></button>
-		<h4 class="modal-title">Join this lobby</h4>
+		<button type="button" class="close" ng-click="close()">&times;</button>
+		<h4 class="modal-title text-center"><strong>Join lobby</strong></h4>
 	</div>
 	<div class="modal-body">
-		<p>You are requesting to join this lobby: <strong>{{ lobby.title }}</strong></p>
+		<p>You are requesting to join this lobby: <strong>{{ title }}</strong></p>
 		<p>Please enter your player name below so this lobby owner can contact you:</p>
 		<div class="form-group">
-			<input type="text" name="join_player_name" class="form-control" placeholder="Your player name" ng-required="true" ng-model="join_player_name">
+			<div class="container-fluid">
+				<input type="text" name="join_player_name" class="form-control" placeholder="Your player name" ng-model="join_player_name" required>
+			</div>
 		</div>
 	</div>
 	<div class="modal-footer">
-		<button type="submit" class="btn btn-warning" novalidate>Join</button>
+		<button type="submit" class="btn btn-primary" ng-disabled="joinForm.join_player_name.$invalid">Join</button>
 	</div>
 </form>

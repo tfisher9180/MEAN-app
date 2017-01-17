@@ -10,13 +10,18 @@
 
     	<link rel="stylesheet" href="./libs/bootstrap/dist/css/bootstrap.min.css">
 		<link rel="stylesheet" href="./libs/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" href="./libs/animate.css/animate.min.css">
 		<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
 		<link rel="stylesheet" href="./css/main.css">
 
 		<script src="./libs/angular/angular.min.js"></script>
 		<script src="./libs/angular-route/angular-route.min.js"></script>
 		<script src="./libs/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+		<script src="./libs/ngInfiniteScroll/build/ng-infinite-scroll.min.js"></script>
+		<script src="./libs/angular-animate/angular-animate.min.js"></script>
 		<script src="./libs/angular-cookies/angular-cookies.min.js"></script>
+		<script src="./libs/moment/min/moment.min.js"></script>
+		<script src="./libs/angular-moment/angular-moment.min.js"></script>
 		<script src="./libs/angular-toArrayFilter/toArrayFilter.js"></script>
 
 		<script src="./libs/firebase/firebase.js"></script>
@@ -39,20 +44,6 @@
 		</header>
 		<div class="page">
 			<div class="container">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="jumbotron welcome">
-							<h1 class="text-center">
-								<span>Browsing <span class="partridge-logo">COD:</span> <span class="project-logo">Infinite Warfare</span></span>
-								<small>Active lobbies</small>
-							</h1>
-						</div>
-					</div>
-				</div>
-				<!--<div class="userinfo" ng-show="currentUser">
-					<span class="userinfo">Hi {{ currentUser }}</span>
-					<a ng-href="/login" ng-click="logout()">logout</a>
-				</div>-->
 				<main class="cf" ng-view></main>
 			</div>
 		</div>
