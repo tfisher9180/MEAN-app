@@ -8,8 +8,23 @@ body {
   color: #888888;
   font-size: 15px;
 }
+.animation.ng-enter {
+  /*-webkit-animation: fadeInDown 1s;
+  -moz-animation: fadeInDown 1s;
+  -ms-animation: fadeInDown 1s;
+  -o-animation: fadeInDown 1s;
+  animation: fadeInDown 1s;*/
+  -webkit-animation: fadeIn 1s;
+  -moz-animation: fadeIn 1s;
+  -ms-animation: fadeIn 1s;
+  -o-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
 textarea {
   resize: none;
+}
+.my_lobby {
+  border-color: #00C851;
 }
 .add-wrapper {
   margin: 40px 0;
@@ -26,18 +41,18 @@ textarea {
 .tab-content .form-group:first-child {
   margin-top: 30px;
 }
-form[name="add-new-form"] .modal-header {
+.modal-form .modal-header {
   position: relative;
   background-color: #2BBBAD;
   color: #fafafa;
 }
-form[name="add-new-form"] .modal-header .close {
+.modal-form .modal-header .close {
   position: absolute; 
   right: 15px;
   top: 50%; 
   transform: translate(0, -50%);
 }
-form[name="add-new-form"] .modal-body, form[name="add-new-form"] .modal-footer, form[name="add-new-form"] .nav-tabs > li.active > a {
+.modal-form .modal-body, .modal-form .modal-footer, .modal-form .nav-tabs > li.active > a {
   background-color: #f5f5f5;
 }
 .btn-next, .btn-submit {

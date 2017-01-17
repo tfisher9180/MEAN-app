@@ -4,13 +4,15 @@
   "dependencies": {
     "bootstrap": "latest",
     "font-awesome": "latest",
-    "animate.css": "latest",
     "angular": "latest",
     "angular-route": "latest",
     "angular-toArrayFilter": "^1.0.1",
     "angularfire": "^2.2.0",
     "angular-cookies": "^1.6.1",
     "angular-bootstrap": "^2.4.0",
-    "ngInfiniteScroll": "1.0.0"
+    "ngInfiniteScroll": "1.0.0",
+    "angular-animate": "^1.6.1",
+    "animate.css": "animate-css#^3.5.2",
+    "angular-moment": "^1.0.1"
   }
 }

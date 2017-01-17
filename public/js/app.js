@@ -12,7 +12,7 @@
 	Remember, a callback is only executed once its function finishes executing
 */
 
-var app = angular.module('app', ['ngRoute', 'ngCookies', 'firebase', 'angular-toArrayFilter', 'ui.bootstrap']);
+var app = angular.module('app', ['ngRoute', 'ngCookies', 'ngAnimate', 'angularMoment', 'firebase', 'angular-toArrayFilter', 'ui.bootstrap']);
 
 // This is executed if a resolve property from the $routeProvider below fails or returns false
 app.run(['$rootScope', '$location', function($rootScope, $location) {
@@ -24,6 +24,17 @@ app.run(['$rootScope', '$location', function($rootScope, $location) {
 		}
 	});
 }]);
+
+app.filter('numKeys', function() {
+	return function(num_players) {
+		if (num_players) {
+			var keys = Object.keys(num_players);
+			return keys.length;
+		} else {
+			return '0';
+		}
+	}
+});
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 	// $routeProvider is a service
@@ -140,6 +151,11 @@ app.controller('userController', ['$scope', '$rootScope', 'Authentication', '$co
 	};
 }]);
 
+// Start refactoring with - https://www.sitepoint.com/creating-three-way-data-binding-firebase-angularjs/
+
+// Look for other firebase tutorials for proper structure
+// Use stackoverflow-like layout??
+
 app.controller('lobbiesController', ['$scope', '$rootScope', 'firebaseAuth', '$firebaseArray', '$firebaseObject', '$cookies', '$uibModal', function($scope, $rootScope, firebaseAuth, $firebaseArray, $firebaseObject, $cookies, $uibModal) {
 
 	var rootRef = firebase.database();
@@ -166,12 +182,6 @@ app.controller('lobbiesController', ['$scope', '$rootScope', 'firebaseAuth', '$f
 			var lobbiesRef = rootRef.ref('lobbies');
 			var lobbyPlayerRef = lobbiesRef.child(firebaseUser.uid);
 
-			/*var lobbiesList = $firebaseObject(lobbiesRef);
-
-			lobbiesList.$loaded().then(function() {
-				$scope.lobbies = lobbiesList;
-			});*/
-
 			var lobbiesList = $firebaseArray(lobbiesRef);
 			$scope.lobbies = lobbiesList;
 
@@ -185,31 +195,6 @@ app.controller('lobbiesController', ['$scope', '$rootScope', 'firebaseAuth', '$f
 				$scope.playerNames = lobbyPlayersArray;
 			});
 
-			$scope.lobby.mic = false;
-			$scope.addLobby = function() {
-				lobbyPlayerRef.set({
-					date: firebase.database.ServerValue.TIMESTAMP,
-					platform: $scope.lobby.platform,
-					game_mode: $scope.lobby.game_mode,
-					group_type: $scope.lobby.type,
-					title: $scope.lobby.title,
-					description: $scope.lobby.description,
-					mic: $scope.lobby.mic,
-					lobby_owner: firebaseUser.uid
-				});
-
-				var cookieObj = {
-					lobby: {
-						user: firebaseUser.uid
-					}
-				};
-
-				$cookies.putObject('lobby', cookieObj);
-				$scope.activeLobby = firebaseUser.uid;
-				$scope.lobby.title = '';
-				
-			};
-
 			$scope.removeLobby = function() {
 				var ref = rootRef.ref('lobbies/'+firebaseUser.uid);
 				lobbiesList.$remove(lobbiesList.$getRecord(firebaseUser.uid)).then(function() {
@@ -219,13 +204,16 @@ app.controller('lobbiesController', ['$scope', '$rootScope', 'firebaseAuth', '$f
 				rootRef.ref('lobby_players').child(firebaseUser.uid).remove();
 			};
 
-			$scope.open = function(key) {
+			$scope.open = function(key, title) {
 				var modalInstance = $uibModal.open({
 					templateUrl: '/views/joinLobbyModal.html',
 					controller: 'joinLobbyModalController',
 					resolve: {
 						key: function() {
 							return key;
+						},
+						title: function() {
+							return title;
 						}	
 					}
 				});
@@ -244,11 +232,13 @@ app.controller('lobbiesController', ['$scope', '$rootScope', 'firebaseAuth', '$f
 	});
 }]);
 
-app.controller('joinLobbyModalController', ['$rootScope', '$scope', '$firebaseArray', '$firebaseObject', '$uibModalInstance', 'key', '$cookies', function($rootScope, $scope, $firebaseArray, $firebaseObject, $uibModalInstance, key, $cookies) {
+app.controller('joinLobbyModalController', ['$rootScope', '$scope', '$firebaseArray', '$firebaseObject', '$uibModalInstance', 'key', 'title', '$cookies', function($rootScope, $scope, $firebaseArray, $firebaseObject, $uibModalInstance, key, title, $cookies) {
 
 	var rootRef = firebase.database();
+	var currentUser = $rootScope.currentUser;
 
 	$scope.key = key;
+	$scope.title = title;
 
 	$scope.close = function() {
 		$uibModalInstance.close();
@@ -258,14 +248,14 @@ app.controller('joinLobbyModalController', ['$rootScope', '$scope', '$firebaseAr
 		console.log(key);
 
 		var lobbyPlayersRef = rootRef.ref('lobby_players');
-		var playerRef = lobbyPlayersRef.child(key).child($rootScope.currentUser);
+		var playerRef = lobbyPlayersRef.child(key).child(currentUser);
 
 		var lobbyPlayersList = $firebaseArray(playerRef);
 
 		playerRef.set({
 			date: firebase.database.ServerValue.TIMESTAMP,
 			player_name: $scope.join_player_name,
-			uid: $rootScope.currentUser
+			uid: currentUser
 		});
 
 		$uibModalInstance.close();
@@ -273,12 +263,46 @@ app.controller('joinLobbyModalController', ['$rootScope', '$scope', '$firebaseAr
 
 }]);
 
-app.controller('addNewModalController', ['$scope','$uibModalInstance', function($scope, $uibModalInstance) {
+app.controller('addNewModalController', ['$scope', '$rootScope', '$uibModalInstance', '$cookies',  function($scope, $rootScope, $uibModalInstance, $cookies) {
+
+	var currentUser = $rootScope.currentUser;
+	var rootRef = firebase.database();
+	var lobbyRef = rootRef.ref('lobbies').child(currentUser);
 
 	$scope.lobby = {};
+	$scope.lobby.mic = false;
 
 	$scope.close = function() {
 		$uibModalInstance.close();
+	}
+
+	$scope.addLobby = function() {
+		lobbyRef.set({
+			date: firebase.database.ServerValue.TIMESTAMP,
+			platform: $scope.lobby.platform,
+			game_mode: $scope.lobby.mode,
+			player_name: $scope.lobby.name,
+			title: $scope.lobby.title,
+			description: $scope.lobby.description,
+			mic: $scope.lobby.mic,
+			lobby_owner: currentUser
+		});
+
+		var cookieObj = {
+			lobby: {
+				user: currentUser
+			}
+		};
+
+		$cookies.putObject('lobby', cookieObj);
+		$rootScope.activeLobby = currentUser;
+		
+		// reset the form
+		$uibModalInstance.close();
+		$scope.lobby = {};
+		$scope.addForm.$setPristine();
+		$scope.addForm.$setUntouched();
+		
 	}
 
 }]);

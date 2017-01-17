@@ -1,18 +1,21 @@
 <div class="row">
 	<div class="col-md-3">
 		<div class="add-wrapper">
-			<button class="btn btn-info btn-add-new btn-block" ng-click="openAddModal()">ADD NEW</button>
+			<button class="btn btn-info btn-add-new btn-block" ng-if="!activeLobby" ng-click="openAddModal()">ADD NEW</button>
+			<button class="btn btn-danger btn-add-new btn-block" ng-if="activeLobby" ng-click="removeLobby()">REMOVE ACTIVE LOBBY</button>
 		</div>
 		<h4 class="page-header">Filter</h4>
 		<form>
 			<div class="form-group">
 				<label class="control-label">Game Mode</label>
-				<select class="form-control input-sm">
-					<option>Multiplayer</option>
-					<option>Zombies</option>
+				<select class="form-control input-sm" ng-model="filter_mode">
+					<option value="{{ undefined }}"></option>
+					<option value="multiplayer">Multiplayer</option>
+					<option value="zombies">Zombies</option>
 				</select>
 			</div>
 		</form>
+		<h4 class="page-header" ng-if="activeLobby">Players looking to join</h4>
 	</div>
 	<div class="col-md-9">
 		<h3 class="page-header pull-left" style="border-bottom: 0; margin-bottom: 0">Active lobbies for: <strong>COD: Infinite Warfare</strong></h3>
@@ -27,34 +30,36 @@
 		<div class="clearfix"></div>
 		<hr style="margin-top: 0px;" />
 		<ul class="list-group lobby-list">
-			<li class="list-group-item">
+			<li class="list-group-item animated animation" ng-repeat="(key, lobby) in lobbies | filter: filter_platform | filter: filter_mode | filter: filter_mic | orderBy: 'lobby.date'" ng-class="{ 'my_lobby': currentUser == lobby.lobby_owner }">
 				<div class="media">
 					<div class="media-body">
 						<div class="top">
-							<small class="text-muted"><i>5 minutes ago</i> by <strong>VibesTF</strong> | <label class="label label-warning"><strong>Multiplayer</strong></label></small>
-							<div class="pull-right"><a href="#"><i class="glyphicon glyphicon-link"></i></a><!-- bird/link/send --></div>
+							<small class="text-muted">
+								<i><time am-time-ago="lobby.date"></time></i> by <strong>{{ lobby.player_name }}</strong> | 
+								<label class="label" ng-class="{ 'label-warning': lobby.game_mode == 'Multiplayer', 'label-secondary': lobby.game_mode == 'Zombies' }">
+									<strong>{{ lobby.game_mode }}</strong>
+								</label>
+							</small>
+							<div class="pull-right">
+								<a href="#">
+									<i class="glyphicon glyphicon-link" ng-if="currentUser != lobby.lobby_owner && currentUser != players[lobby.lobby_owner][currentUser].uid" ng-click="open(lobby.lobby_owner, lobby.title)"></i>
+									<small ng-if="currentUser == players[lobby.lobby_owner][currentUser].uid">You've joined this lobby  <i class="glyphicon glyphicon-saved"></i></small>
+									<i class="glyphicon glyphicon-cog" ng-if="currentUser == lobby.lobby_owner"></i>
+									<!-- bird/link/send -->
+								</a>
+							</div>
 						</div>
-						<div class="media-heading"><strong>LFM CTF Competitive</strong></div>
-						<p class="list-group-item-text">Doing the competitive playlist, please have mic</p>
+						<div class="media-heading">
+							<strong>{{ lobby.title }}</strong>
+						</div>
+						<p class="list-group-item-text">{{ lobby.description }}</p>
 					</div>
 					<hr />
-					<label class="label label-primary"><i class="fa fa-microphone"></i></label>
-					<div class="pull-right"><span>5 players have joined this lobby</span></div>
-				</div>
-			</li>
-			<li class="list-group-item">
-				<div class="media">
-					<div class="media-body">
-						<div class="top">
-							<small class="text-muted"><i>12 minutes ago</i> by <strong>TisDunn</strong> | <label class="label label-secondary"><strong>Zombies</strong></label></small>
-							<div class="pull-right"><a href="#"><i class="glyphicon glyphicon-link"></i></a><!-- bird/link/send --></div>
-						</div>
-						<div class="media-heading"><strong>Zombies for Crates</strong></div>
-						<p class="list-group-item-text">Just want to farm some orange weapons</p>
+					<label ng-if="lobby.mic == true" class="label label-primary"><i class="fa fa-microphone"></i></label>
+					<i ng-if="lobby.mic == false" class="text-muted fa fa-microphone-slash no-mic"></i>
+					<div class="pull-right">
+						<span>{{ players[lobby.lobby_owner] | numKeys }} players have joined this lobby</span>
 					</div>
-					<hr />
-					<i class="text-muted fa fa-microphone no-mic"></i>
-					<div class="pull-right"><span>2 players have joined this lobby</span></div>
 				</div>
 			</li>
 		</ul>
