@@ -1,13 +1,66 @@
 html {
   height: 100%;
+  font-size: 100%;
 }
 body {
   min-height: 100%;
   position: relative;
-  font-family: 'Roboto', Helvetica, sans-serif;
-  color: #888888;
-  font-size: 15px;
+  font-family: 'Arial', "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 13px;
+  line-height: 1.3em;
+  color: #242729;
+  background-color: #fff;
 }
+.narrower {
+  padding-left: 60px;
+  padding-right: 60px;
+}
+
+
+/* 
+--------------------------------------------------------
+* =========== NAVIGATION STYLES =========== 
+*/
+
+.navbar {
+  min-height: 34px;
+  height: 34px;
+}
+.navbar-default {
+  background-color: rgba(12,13,14,0.86);
+  border: 0;
+  border-radius: 0;
+}
+.navbar-default .navbar-nav > li > a {
+  line-height: 4px; /* 30px less than navbar height */
+  color: #777;
+}
+.navbar-default .navbar-nav > li > a:hover {
+  color: #777;
+  background-color: #3b4045;
+}
+.navbar-default .navbar-nav > li.active > a, .navbar-default .navbar-nav > li.active > a:hover, .navbar-default .navbar-nav > li > a:focus {
+  background-color: #eff0f1;
+  color: #777;
+}
+.navbar-brand {
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 4px;
+}
+.partridge-logo {
+  color: #fff;
+}
+.project-logo {
+  color: #33b5e5;
+  font-weight: bold;
+}
+
+/* 
+* =========== END NAVIGATION STYLES =========== 
+--------------------------------------------------------
+*/
+
 .push-notification {
   position: absolute;
   bottom: 45px;
