@@ -156,7 +156,7 @@ app.controller('userController', ['$scope', '$rootScope', 'Authentication', '$co
 // Look for other firebase tutorials for proper structure
 // Use stackoverflow-like layout??
 
-app.controller('lobbiesController', ['$scope', '$rootScope', 'firebaseAuth', '$firebaseArray', '$firebaseObject', '$cookies', '$uibModal', function($scope, $rootScope, firebaseAuth, $firebaseArray, $firebaseObject, $cookies, $uibModal) {
+app.controller('lobbiesController', ['$scope', '$timeout', '$rootScope', 'firebaseAuth', '$firebaseArray', '$firebaseObject', '$cookies', '$uibModal', function($scope, $timeout, $rootScope, firebaseAuth, $firebaseArray, $firebaseObject, $cookies, $uibModal) {
 
 	var rootRef = firebase.database();
 
@@ -176,7 +176,7 @@ app.controller('lobbiesController', ['$scope', '$rootScope', 'firebaseAuth', '$f
 			$rootScope.players = lobbyPlayersList;
 			
 			if (cookie) {
-				$scope.activeLobby = $cookies.getObject('lobby').lobby.user;
+				$rootScope.activeLobby = $cookies.getObject('lobby').lobby.user;
 			}
 
 			var lobbiesRef = rootRef.ref('lobbies');
@@ -191,14 +191,21 @@ app.controller('lobbiesController', ['$scope', '$rootScope', 'firebaseAuth', '$f
 			});
 
 			lobbyPlayersArray.$watch(function(data) {
+				// player joined = data.key
 				$scope.numberPlayers = lobbyPlayersArray.length;
 				$scope.playerNames = lobbyPlayersArray;
+				if (data.event == 'child_added') {
+					$rootScope.pushNotif = 'Someone has joined your lobby';
+					$timeout(function() {
+						$rootScope.pushNotif = '';
+					}, 5000);
+				}
 			});
 
 			$scope.removeLobby = function() {
 				var ref = rootRef.ref('lobbies/'+firebaseUser.uid);
 				lobbiesList.$remove(lobbiesList.$getRecord(firebaseUser.uid)).then(function() {
-					delete $rootScope.activeLobby;
+					$rootScope.activeLobby = '';
 					$cookies.remove('lobby');
 				});
 				rootRef.ref('lobby_players').child(firebaseUser.uid).remove();
@@ -316,4 +323,12 @@ app.controller('labelBtnController', ['$rootScope', '$scope', function($rootScop
 	$scope.setPlatform = function(platform) {
 		$rootScope.filter_platform = platform;
 	};
+}]);
+
+app.controller('pushNotificationController', ['$scope', '$rootScope', function($scope, $rootScope) {
+
+	$scope.closeNotif = function() {
+		$rootScope.pushNotif = '';
+	};
+
 }]);

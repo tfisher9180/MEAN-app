@@ -50,7 +50,7 @@
 		<div class="clearfix"></div>
 		<hr style="margin-top: 0px;" />
 		<ul class="list-group lobby-list">
-			<li class="list-group-item animated animation" ng-repeat="(key, lobby) in lobbies | filter: filter_platform | filter: filter_mode | filter: filter_mic | orderBy: 'lobby.date'" ng-class="{ 'my_lobby': currentUser == lobby.lobby_owner }">
+			<li class="list-group-item animated animation" ng-repeat="(key, lobby) in lobbies | filter: filter_platform | filter: filter_mode | filter: filter_mic | orderBy: 'lobby.date':true" ng-class="{ 'my_lobby': currentUser == lobby.lobby_owner }">
 				<div class="media">
 					<div class="media-body">
 						<div class="top">

@@ -20,4 +20,8 @@
 		</div>
 	</div>
 </nav>
+<div ng-controller="pushNotificationController" ng-if="pushNotif" class="push-notification animate slide">
+	<span>{{ pushNotif }}</span>
+	<button type="button" class="close" ng-click="closeNotif()">&times;</button>
+</div>
 
