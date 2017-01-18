@@ -198,7 +198,7 @@ app.controller('lobbiesController', ['$scope', '$rootScope', 'firebaseAuth', '$f
 			$scope.removeLobby = function() {
 				var ref = rootRef.ref('lobbies/'+firebaseUser.uid);
 				lobbiesList.$remove(lobbiesList.$getRecord(firebaseUser.uid)).then(function() {
-					$scope.activeLobby = '';
+					delete $rootScope.activeLobby;
 					$cookies.remove('lobby');
 				});
 				rootRef.ref('lobby_players').child(firebaseUser.uid).remove();
@@ -270,6 +270,7 @@ app.controller('addNewModalController', ['$scope', '$rootScope', '$uibModalInsta
 	var lobbyRef = rootRef.ref('lobbies').child(currentUser);
 
 	$scope.lobby = {};
+	$scope.lobby.description = '';
 	$scope.lobby.mic = false;
 
 	$scope.close = function() {
@@ -288,6 +289,8 @@ app.controller('addNewModalController', ['$scope', '$rootScope', '$uibModalInsta
 			lobby_owner: currentUser
 		});
 
+		$rootScope.activeLobby = currentUser;
+
 		var cookieObj = {
 			lobby: {
 				user: currentUser
@@ -295,7 +298,6 @@ app.controller('addNewModalController', ['$scope', '$rootScope', '$uibModalInsta
 		};
 
 		$cookies.putObject('lobby', cookieObj);
-		$rootScope.activeLobby = currentUser;
 		
 		// reset the form
 		$uibModalInstance.close();

@@ -1,8 +1,8 @@
 <div class="row">
 	<div class="col-md-3">
 		<div class="add-wrapper">
-			<button class="btn btn-info btn-add-new btn-block" ng-if="!activeLobby" ng-click="openAddModal()">ADD NEW</button>
-			<button class="btn btn-danger btn-add-new btn-block" ng-if="activeLobby" ng-click="removeLobby()">REMOVE ACTIVE LOBBY</button>
+			<button class="btn btn-info btn-add-new btn-block" ng-show="!activeLobby" ng-click="openAddModal()">ADD NEW</button>
+			<button class="btn btn-danger btn-add-new btn-block" ng-show="activeLobby" ng-click="removeLobby()">REMOVE ACTIVE LOBBY</button>
 		</div>
 		<h4 class="page-header">Filter</h4>
 		<form>
@@ -14,8 +14,28 @@
 					<option value="zombies">Zombies</option>
 				</select>
 			</div>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="mic" ng-model="filter_mic" value="true"> Mic
+				</label>
+			</div>
 		</form>
-		<h4 class="page-header" ng-if="activeLobby">Players looking to join</h4>
+		<div ng-if="activeLobby">
+			<h4 class="page-header">Players looking to join</h4>
+			<small><p class="help-block">These are players looking to join your lobby, invite them on your platform of choice!</p></small>
+			<div class="well">
+				<p class="text-muted" ng-if="playerNames.length == 0">No players</p>
+				<ul class="list-group" ng-if="playerNames.length > 0">
+					<li class="list-group-item" ng-repeat="(key, info) in playerNames">
+						<i class="fa fa-user"></i>&nbsp;&nbsp;
+						<span>{{ info.player_name }}</span>
+						<div>
+							<small><i><time am-time-ago="info.date"></time></i></small>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
 	</div>
 	<div class="col-md-9">
 		<h3 class="page-header pull-left" style="border-bottom: 0; margin-bottom: 0">Active lobbies for: <strong>COD: Infinite Warfare</strong></h3>

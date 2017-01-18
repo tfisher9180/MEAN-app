@@ -25,6 +25,7 @@ textarea {
 }
 .my_lobby {
   border-color: #00C851;
+  margin-bottom: 5px;
 }
 .add-wrapper {
   margin: 40px 0;
