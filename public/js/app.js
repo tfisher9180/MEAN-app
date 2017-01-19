@@ -181,9 +181,11 @@ app.controller('lobbiesController', ['$scope', '$timeout', '$rootScope', 'fireba
 
 			var lobbiesRef = rootRef.ref('lobbies');
 			var lobbyPlayerRef = lobbiesRef.child(firebaseUser.uid);
+			var myLobbyObj = $firebaseObject(lobbyPlayerRef);
 
 			var lobbiesList = $firebaseArray(lobbiesRef);
 			$scope.lobbies = lobbiesList;
+			$scope.my_lobby = myLobbyObj
 
 			lobbyPlayersArray.$loaded().then(function(data) {
 				$scope.numberPlayers = lobbyPlayersArray.length;
@@ -279,6 +281,7 @@ app.controller('addNewModalController', ['$scope', '$rootScope', '$uibModalInsta
 	$scope.lobby = {};
 	$scope.lobby.description = '';
 	$scope.lobby.mic = false;
+	$rootScope.my_lobby = {};
 
 	$scope.close = function() {
 		$uibModalInstance.close();
