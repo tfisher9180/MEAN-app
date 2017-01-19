@@ -14,7 +14,20 @@ body {
   font-size: 13px;
   line-height: 1.3em;
   color: #242729;
-  background-color: #fff;
+  background-color: #f6f7f9;
+}
+a {
+  text-decoration: none!important;
+}
+footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0.45;
+}
+.fa-gamepad {
+  font-size: 1.75em;
 }
 .narrower {
   padding-left: 60px;
@@ -41,9 +54,70 @@ body {
 .panel-primary > .panel-body {
   padding: 12px;
 }
+select {
+  border-radius: 1px;
+}
+.coming-soon {
+  position: relative;
+}
+.coming-soon .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+.coming-soon-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-weight: bold;
+  font-size: 20px;
+}
+.coming-soon {
+  -webkit-box-shadow: 0px 2px 20px 0px rgba(0,0,0,0.5);
+  box-shadow: 0px 2px 20px 0px rgba(0,0,0,0.5);
+  transition: all 0.1s linear;
+}
 
 /* 
 * =========== END GENERAL STYLES =========== 
+--------------------------------------------------------
+*/
+
+/* 
+--------------------------------------------------------
+* =========== HOME STYLES =========== 
+*/
+
+.img-wrapper {
+  height: 200px;
+  width: 100%;
+}
+.img-wrapper-cod-infinite-warfare {
+  background-image: url('../img/cover_art/cod-infinite-warfare.jpeg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.img-wrapper-overwatch {
+  background-image: url('../img/cover_art/overwatch.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.img-wrapper-league-of-legends {
+  background-image: url('../img/cover_art/league-of-legends.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* 
+* =========== END HOME STYLES =========== 
 --------------------------------------------------------
 */
 
@@ -109,6 +183,9 @@ body {
   right: 0;
   bottom: -1px;
 }
+.subheader .fa-search {
+  display: none;
+}
 .filter-platforms label {
   color: #535a60;
   padding: 10px 20px;
@@ -140,6 +217,9 @@ body {
   background-color: #ffbb33;
   color: #fff;
 }
+.btn-add-new, .btn-mobile-add-new {
+  border-radius: 1px;
+}
 .my_lobby {
   border-color: rgba(69,161,99,0.5);
   margin-bottom: 5px;
@@ -149,6 +229,55 @@ body {
 /* 
 * =========== END LOBBY STYLES =========== 
 --------------------------------------------------------
+*/
+
+
+
+/* 
+--------------------------------------------------------
+* =========== FILTER STYLES =========== 
+*/
+
+.filter {
+  margin: 40px 0;
+}
+.filter form {
+  padding-top: 20px;
+}
+
+/* 
+* =========== END FILTER STYLES =========== 
+--------------------------------------------------------
+*/
+
+
+/* 
+--------------------------------------------------------
+* =========== ADD MODAL STYLES =========== 
+*/
+
+.modal-form .modal-body, .modal-form .modal-footer, .modal-form .nav-tabs > li.active > a {
+  background-color: #fff;
+}
+.modal-body {
+  padding: 0;
+}
+.modal-content {
+  background-color: #fff;
+}
+.uib-tab a {
+  background-color: #f5f5f5;
+  padding-top: 20px!important;
+  padding-bottom: 20px!important;
+  border-radius: 0!important;
+}
+.uib-tab a:hover {
+  background-color: #f5f5f5;
+}
+
+/* 
+--------------------------------------------------------
+* =========== END ADD MODAL STYLES =========== 
 */
 
 
@@ -179,6 +308,108 @@ body {
 --------------------------------------------------------
 */
 
+/* 
+--------------------------------------------------------
+* =========== MOBILE MEDIA QUERIES =========== 
+*/
+
+@media (max-width: 768px) {
+  body {
+    padding-bottom: 100px;
+  }
+  .narrower {
+    padding-left: 15px!important;
+    padding-right: 15px!important;
+  }
+  .coming-soon {
+    margin-bottom: 25px;
+  }
+  .navbar-toggle {
+    display: none;
+  }
+  .navbar {
+    min-height: 44px;
+    height: 44px;
+  }
+  .navbar-brand {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 14px;
+  }
+  .platform-filter-list {
+    display: none;
+  }
+  .mobile-platform-filter-list {
+    display: block;
+    clear: both;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .mobile-platform-filter-list label {
+    background-color: #9fa6ad;
+    color: #fff;
+    text-align: center;
+    font-size: 14px;
+    margin: 5px;
+    padding: 4px 20px;
+  }
+  .mobile-platform-filter-list .filter-platforms {
+    border-spacing: 5px;
+  }
+  .mobile-platform-filter-list .active {
+    background-color: #f69c55!important;
+    color: #fff;
+        border: 1px solid #f69c55!important;
+    border-top-color: #f69c55!important;
+    border-right-color: #f69c55!important;
+  }
+  .subheader .page-header {
+    font-size: 14px;
+    color: #242729;
+    padding: 5px 0;
+    font-weight: bold;
+  }
+  .subheader {
+    border-bottom: 2px solid #d6d9dc;
+    padding: 0 10px;
+    background-color: #eff0f1;
+    margin-left: -15px;
+    margin-right: -15px;
+    margin-top: 20px;
+  }
+  .add-wrapper .btn-add-new {
+    display: none;
+  }
+  .btn-mobile-add-new {
+    display: block;
+    margin-top: 5px;
+    font-size: 14px;
+    padding: 4px 8px;
+  }
+  .subheader .fa-search {
+    display: inline-block;
+    margin-left: 10px;
+    color: #6a737c;
+    opacity: 0.35;
+    font-weight: bold;
+  }
+  .mobile-filter {
+    display: none;
+  }
+  .mobile-filter .page-header {
+    margin-bottom: 10px;
+  }
+  .filter {
+    display: none;
+  }
+}
+
+/* 
+* =========== END MOBILE MEDIA QUERIES =========== 
+--------------------------------------------------------
+*/
+
+
 .push-notification {
   position: absolute;
   bottom: 45px;
@@ -205,6 +436,13 @@ body {
   -ms-animation: fadeIn 1s;
   -o-animation: fadeIn 1s;
   animation: fadeIn 1s;
+}
+.animation.ng-leave {
+  -webkit-animation: fadeOut 1s;
+  -moz-animation: fadeOut 1s;
+  -ms-animation: fadeOut 1s;
+  -o-animation: fadeOut 1s;
+  animation: fadeOut 1s;
 }
 .slide.ng-enter {
   -webkit-animation: fadeInUp 0.5s;
@@ -249,9 +487,7 @@ textarea {
   top: 50%; 
   transform: translate(0, -50%);
 }
-.modal-form .modal-body, .modal-form .modal-footer, .modal-form .nav-tabs > li.active > a {
-  background-color: #f5f5f5;
-}
+
 .btn-next, .btn-submit {
   background-color: #4285F4;
 }

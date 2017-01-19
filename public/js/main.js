@@ -4,4 +4,9 @@ $(document).ready(function() {
 		e.preventDefault();
 	});
 
+	$('.search').click(function(e) {
+		e.preventDefault();
+		$('.mobile-filter').slideToggle();
+	});
+
 });
