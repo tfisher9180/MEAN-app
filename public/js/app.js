@@ -160,6 +160,12 @@ app.controller('lobbiesController', ['$scope', '$timeout', '$rootScope', 'fireba
 	var rootRef = firebase.database();
 
 	$scope.lobby = {};
+	$scope.game = 'COD: Infinite Warfare';
+	$scope.limit = 10;
+
+	$scope.loadMore = function() {
+		$scope.limit = $scope.limit + 10;
+	};
 
 	var cookie = $cookies.getObject('lobby');
 
@@ -222,7 +228,7 @@ app.controller('lobbiesController', ['$scope', '$timeout', '$rootScope', 'fireba
 						},
 						title: function() {
 							return title;
-						}	
+						}
 					}
 				});
 			};
@@ -263,6 +269,7 @@ app.controller('joinLobbyModalController', ['$rootScope', '$scope', '$firebaseAr
 		playerRef.set({
 			date: firebase.database.ServerValue.TIMESTAMP,
 			player_name: $scope.join_player_name,
+			message: $scope.join_player_message,
 			uid: currentUser
 		});
 
@@ -287,8 +294,11 @@ app.controller('addNewModalController', ['$scope', '$rootScope', '$uibModalInsta
 	}
 
 	$scope.addLobby = function() {
+		var expireDate = new Date();
+		expireDate.setHours(expireDate.getHours() + 2);
 		lobbyRef.set({
 			date: firebase.database.ServerValue.TIMESTAMP,
+			expires: expireDate.getTime(),
 			platform: $scope.lobby.platform,
 			game_mode: $scope.lobby.mode,
 			player_name: $scope.lobby.name,
@@ -306,7 +316,7 @@ app.controller('addNewModalController', ['$scope', '$rootScope', '$uibModalInsta
 			}
 		};
 
-		$cookies.putObject('lobby', cookieObj);
+		$cookies.putObject('lobby', cookieObj, { 'expires': expireDate });
 		
 		// reset the form
 		$uibModalInstance.close();

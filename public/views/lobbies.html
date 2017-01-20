@@ -1,3 +1,4 @@
+<p class="text-center viewing">You are viewing lobbies for: <strong>{{ game }}</strong></p>
 <div class="row">
 	<div class="col-md-9">
 		<div class="mobile-platform-filter-list">
@@ -10,9 +11,34 @@
 				</div>
 			</div>
 		</div>
+		<div ng-if="activeLobby" class="mobile-joined-players-wrapper">
+			<small><p class="help-block">These are players looking to join your lobby, invite them on your platform of choice!</p></small>
+			<div class="panel panel-primary">
+				<div class="panel-heading">Players looking to join</div>
+				<div class="panel-body">
+					<p class="text-muted" ng-if="playerNames.length == 0">No players</p>
+					<ul class="list-group joined-players-list" ng-if="playerNames.length > 0">
+						<li class="list-group-item" ng-repeat="(key, info) in playerNames">
+							<div class="row">
+								<div class="col-xs-12">
+									<i class="fa fa-user"></i>&nbsp;&nbsp;<span class="player-name">{{ info.player_name }}</span>
+								</div>
+							</div>
+
+							<span class="player_message text-muted">{{ info.message }}</span>
+
+							<div>
+								<small class="time-ago"><i><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;<time am-time-ago="info.date"></time></i></small>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
 		<div class="subheader">
 			<h1 class="page-header pull-left" style="border-bottom: 0; margin-bottom: 0">Active Lobbies<a href="#" class="search"><i class="fa fa-search"></i></a></h1>
 			<button class="btn btn-info btn-mobile-add-new pull-right" ng-show="!activeLobby" ng-click="openAddModal()"><i class="fa fa-plus"></i>&nbsp;Add lobby</button>
+			<button class="btn btn-mobile-remove pull-right" ng-show="activeLobby" ng-click="removeLobby()"><i class="fa fa-trash"></i>&nbsp;Remove my lobby</button>
 			<div class="pull-right platform-filter-list" ng-controller="labelBtnController">
 				<div class="btn-group filter-platforms">
 					<label class="btn active" ng-model="filter_platform" uib-btn-radio="''" ng-click="setPlatform(filter_platform)">All</label>
@@ -48,14 +74,14 @@
 					<div class="media-body">
 						<div class="top">
 							<small class="text-muted">
-								<i><time am-time-ago="lobby.date"></time></i> by <strong>{{ my_lobby.player_name }}</strong> | 
+								<i><time am-time-ago="my_lobby.date"></time></i> by <strong>You</strong> | 
 								<label class="label" ng-class="{ 'label-primary': my_lobby.game_mode == 'Multiplayer', 'label-secondary': my_lobby.game_mode == 'Zombies' }">
 									<strong>{{ my_lobby.game_mode }}</strong>
 								</label>
 							</small>
 							<div class="pull-right">
 								<a href="#">
-									<i class="glyphicon glyphicon-cog"></i>
+									<time>{{ my_lobby.expires | amCalendar }}</time> <i class="glyphicon glyphicon-time"></i>
 									<!-- bird/link/send -->
 								</a>
 							</div>
@@ -73,12 +99,12 @@
 					</div>
 				</div>
 			</li>
-			<li class="list-group-item animated animation" ng-if="lobby.lobby_owner != currentUser" ng-repeat="(key, lobby) in lobbies | filter: filter_platform | filter: filter_mode | filter: filter_mic | orderBy: 'lobby.date':true">
+			<li class="list-group-item lobby animated animation" ng-if="lobby.lobby_owner != currentUser" ng-repeat="(key, lobby) in lobbies | filter: filter_platform | filter: filter_mode | filter: filter_mic | orderBy: 'lobby.date' | limitTo: limit">
 				<div class="media">
 					<div class="media-body">
 						<div class="top">
 							<small class="text-muted">
-								<i><time am-time-ago="lobby.date"></time></i> by <strong>{{ lobby.player_name }}</strong> | 
+								<i><time am-time-ago="lobby.date"></time></i> by <strong class="created-player-name">{{ lobby.player_name }}</strong> | 
 								<label class="label" ng-class="{ 'label-primary': lobby.game_mode == 'Multiplayer', 'label-secondary': lobby.game_mode == 'Zombies' }">
 									<strong>{{ lobby.game_mode }}</strong>
 								</label>
@@ -106,6 +132,7 @@
 				</div>
 			</li>
 		</ul>
+		<button class="btn btn-default center-block" ng-if="lobbies.length > limit" ng-click="loadMore()">Load More</button>
 	</div>
 	<div class="col-md-3">
 		<div class="add-wrapper">
@@ -151,6 +178,10 @@
 				</div>
 			</div>
 		</div>
+		<div class="panel panel-primary">
+			<div class="panel-heading">Send us Feedback</div>
+		</div>
+		<small class="text-center"><p class="help-block">Please send any feedback or bugs to <u>tfisher9180@gmail.com</u> Enjoy!</p></small>
 	</div>
 </div>
 

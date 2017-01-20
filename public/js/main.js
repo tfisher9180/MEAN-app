@@ -1,12 +1,12 @@
 $(document).ready(function() {
 
-	$('.nav-tabs a').click(function(e) {
-		e.preventDefault();
-	});
-
-	$('.search').click(function(e) {
+	$('body').on('click', '.search', function(e) {
 		e.preventDefault();
 		$('.mobile-filter').slideToggle();
+	});
+
+	$('.nav-tabs a').click(function(e) {
+		e.preventDefault();
 	});
 
 });
