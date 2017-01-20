@@ -1,18 +1,17 @@
 <nav class="navbar navbar-default">
-	<div class="container">
+	<div class="container narrower">
 		<div class="navbar-header">
 			<button class="navbar-toggle" data-toggle="collapse" data-target="#navigation">
 				<i class="fa fa-bars"></i>
 			</button>
 			<a href="#" class="navbar-brand">
-				<span class="partridge-logo">Partridge</span>
-				<span class="project-logo">Project</span>
+				<strong><span class="partridge-logo">Partridge</span> <span class="project-logo">Project</span></strong>
 			</a>
 		</div>
 		<div class="collapse navbar-collapse" id="navigation">
 			<ul class="nav navbar-nav">
-				<li class="active"><a href="#">Games</a></li>
-				<li><a href="#">Contact us</a></li>
+				<li ng-class="{ 'active': page == 'home' }"><a href="./">Home</a></li>
+				<!--<li><a href="#">Contact us</a></li>-->
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				

@@ -41,18 +41,10 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 	// When we include it here as a dependency, we are calling it's methods and code, similar to how we called the Authentication service from the userController
 	$routeProvider.
 		when('/', {
-			templateUrl: '/views/list.html', // key/value syntax ... { is an object } ... key could also be considered a method
-			controller: 'listController'
+			templateUrl: '/views/home.html', // key/value syntax ... { is an object } ... key could also be considered a method
+			controller: 'homeController'
 		}).
-		when('/login', {
-			templateUrl: '/views/login.html',
-			controller: 'userController'
-		}).
-		when('/register', {
-			templateUrl: '/views/register.html',
-			controller: 'userController'
-		}).
-		when('/lobbies', {
+		when('/cod-infinite-warfare', {
 			templateUrl: '/views/lobbies.html',
 			controller: 'lobbiesController'/*,
 			resolve: {
@@ -65,10 +57,16 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 			}*/	// angularJS feature, a list of dependencies that the $routeProvider service will wait for (until they're resolved). If the promises are resolved successfully, then everything will continue as normal, but if any are rejected then it creates an event called route change error and the controller will NOT be instantiated.
 		}).
 		otherwise({
-			redirectTo: '/login'
+			redirectTo: '/'
 		});
 
 		$locationProvider.html5Mode(true);
+}]);
+
+app.controller('homeController', ['$scope', '$rootScope', function($scope, $rootScope) {
+
+	$rootScope.page = 'home';
+
 }]);
 
 // Factory to return the $firebaseAuth service. Abstracted this into it's own factory so that the $routeProvider resolve property could immediately call the $requireSignIn helper method instead of having to create a new function in the userController that had access to the 'var auth = $firebaseAuth();'
@@ -80,7 +78,7 @@ app.factory('firebaseAuth', ['$firebaseAuth', function($firebaseAuth) {
 	Great example of dependency injection is using a service (factory) inside of a controller. When we declare 'Authentication' here in this controller's dependencies, we're essentially injecting all of the code that is in the Authentication service above, INTO this controller. We can call all of its methods and code right here from in this controller.
 */
 
-
+/*
 app.factory('Authentication', ['firebaseAuth', '$rootScope', '$firebaseObject', '$location', function(firebaseAuth, $rootScope, $firebaseObject, $location) {
 	var dbRef = firebase.database();
 
@@ -150,6 +148,7 @@ app.controller('userController', ['$scope', '$rootScope', 'Authentication', '$co
 		Authentication.register($scope.user);
 	};
 }]);
+*/
 
 // Start refactoring with - https://www.sitepoint.com/creating-three-way-data-binding-firebase-angularjs/
 
@@ -161,6 +160,12 @@ app.controller('lobbiesController', ['$scope', '$timeout', '$rootScope', 'fireba
 	var rootRef = firebase.database();
 
 	$scope.lobby = {};
+	$scope.game = 'COD: Infinite Warfare';
+	$scope.limit = 10;
+
+	$scope.loadMore = function() {
+		$scope.limit = $scope.limit + 10;
+	};
 
 	var cookie = $cookies.getObject('lobby');
 
@@ -181,9 +186,11 @@ app.controller('lobbiesController', ['$scope', '$timeout', '$rootScope', 'fireba
 
 			var lobbiesRef = rootRef.ref('lobbies');
 			var lobbyPlayerRef = lobbiesRef.child(firebaseUser.uid);
+			var myLobbyObj = $firebaseObject(lobbyPlayerRef);
 
 			var lobbiesList = $firebaseArray(lobbiesRef);
 			$scope.lobbies = lobbiesList;
+			$scope.my_lobby = myLobbyObj
 
 			lobbyPlayersArray.$loaded().then(function(data) {
 				$scope.numberPlayers = lobbyPlayersArray.length;
@@ -221,7 +228,7 @@ app.controller('lobbiesController', ['$scope', '$timeout', '$rootScope', 'fireba
 						},
 						title: function() {
 							return title;
-						}	
+						}
 					}
 				});
 			};
@@ -262,6 +269,7 @@ app.controller('joinLobbyModalController', ['$rootScope', '$scope', '$firebaseAr
 		playerRef.set({
 			date: firebase.database.ServerValue.TIMESTAMP,
 			player_name: $scope.join_player_name,
+			message: $scope.join_player_message,
 			uid: currentUser
 		});
 
@@ -279,14 +287,18 @@ app.controller('addNewModalController', ['$scope', '$rootScope', '$uibModalInsta
 	$scope.lobby = {};
 	$scope.lobby.description = '';
 	$scope.lobby.mic = false;
+	$rootScope.my_lobby = {};
 
 	$scope.close = function() {
 		$uibModalInstance.close();
 	}
 
 	$scope.addLobby = function() {
+		var expireDate = new Date();
+		expireDate.setHours(expireDate.getHours() + 2);
 		lobbyRef.set({
 			date: firebase.database.ServerValue.TIMESTAMP,
+			expires: expireDate.getTime(),
 			platform: $scope.lobby.platform,
 			game_mode: $scope.lobby.mode,
 			player_name: $scope.lobby.name,
@@ -304,7 +316,7 @@ app.controller('addNewModalController', ['$scope', '$rootScope', '$uibModalInsta
 			}
 		};
 
-		$cookies.putObject('lobby', cookieObj);
+		$cookies.putObject('lobby', cookieObj, { 'expires': expireDate });
 		
 		// reset the form
 		$uibModalInstance.close();
@@ -318,11 +330,19 @@ app.controller('addNewModalController', ['$scope', '$rootScope', '$uibModalInsta
 
 app.controller('labelBtnController', ['$rootScope', '$scope', function($rootScope, $scope) {
 	$rootScope.filter_platform = '';
+	$rootScope.filter_mode = '';
+	$rootScope.filter_mic = '';
 
 	/* Need this function ui-bootstrap buttons to work */
 	$scope.setPlatform = function(platform) {
 		$rootScope.filter_platform = platform;
 	};
+	$scope.setMode = function(mode) {
+		$rootScope.filter_mode = mode;
+	}
+	$scope.setMic = function(mic) {
+		$rootScope.filter_mic = mic;
+	}
 }]);
 
 app.controller('pushNotificationController', ['$scope', '$rootScope', function($scope, $rootScope) {

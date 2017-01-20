@@ -1,68 +1,117 @@
+<p class="text-center viewing">You are viewing lobbies for: <strong>{{ game }}</strong></p>
 <div class="row">
-	<div class="col-md-3">
-		<div class="add-wrapper">
-			<button class="btn btn-info btn-add-new btn-block" ng-show="!activeLobby" ng-click="openAddModal()">ADD NEW</button>
-			<button class="btn btn-danger btn-add-new btn-block" ng-show="activeLobby" ng-click="removeLobby()">REMOVE ACTIVE LOBBY</button>
-		</div>
-		<h4 class="page-header">Filter</h4>
-		<form>
-			<div class="form-group">
-				<label class="control-label">Game Mode</label>
-				<select class="form-control input-sm" ng-model="filter_mode">
-					<option value="{{ undefined }}"></option>
-					<option value="multiplayer">Multiplayer</option>
-					<option value="zombies">Zombies</option>
-				</select>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" name="mic" ng-model="filter_mic" value="true"> Mic
-				</label>
-			</div>
-		</form>
-		<div ng-if="activeLobby">
-			<h4 class="page-header">Players looking to join</h4>
-			<small><p class="help-block">These are players looking to join your lobby, invite them on your platform of choice!</p></small>
-			<div class="well">
-				<p class="text-muted" ng-if="playerNames.length == 0">No players</p>
-				<ul class="list-group" ng-if="playerNames.length > 0">
-					<li class="list-group-item" ng-repeat="(key, info) in playerNames">
-						<i class="fa fa-user"></i>&nbsp;&nbsp;
-						<span>{{ info.player_name }}</span>
-						<div>
-							<small><i><time am-time-ago="info.date"></time></i></small>
-						</div>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
 	<div class="col-md-9">
-		<h3 class="page-header pull-left" style="border-bottom: 0; margin-bottom: 0">Active lobbies for: <strong>COD: Infinite Warfare</strong></h3>
-		<div class="pull-right" style="margin-top: 40px" ng-controller="labelBtnController">
-			<div class="btn-group filter-platforms">
-				<label class="btn active" ng-model="filter_platform" uib-btn-radio="''" ng-click="setPlatform(filter_platform)">All</label>
-				<label class="btn" ng-model="filter_platform" uib-btn-radio="'ps4'" ng-click="setPlatform(filter_platform)">PS4</label>
-				<label class="btn" ng-model="filter_platform" uib-btn-radio="'xbox'" ng-click="setPlatform(filter_platform)">XBOX</label>
-				<label class="btn" ng-model="filter_platform" uib-btn-radio="'pc'" ng-click="setPlatform(filter_platform)">PC</label>
+		<div class="mobile-platform-filter-list">
+			<div class="mobile-platform-filter-list" ng-controller="labelBtnController">
+				<div class="btn-group filter-platforms">
+					<label class="btn active" ng-model="filter_platform" uib-btn-radio="''" ng-click="setPlatform(filter_platform)">All</label>
+					<label class="btn" ng-model="filter_platform" uib-btn-radio="'ps4'" ng-click="setPlatform(filter_platform)">PS4</label>
+					<label class="btn" ng-model="filter_platform" uib-btn-radio="'xbox'" ng-click="setPlatform(filter_platform)">XBOX</label>
+					<label class="btn" ng-model="filter_platform" uib-btn-radio="'pc'" ng-click="setPlatform(filter_platform)">PC</label>
+				</div>
 			</div>
 		</div>
-		<div class="clearfix"></div>
-		<hr style="margin-top: 0px;" />
+		<div ng-if="activeLobby" class="mobile-joined-players-wrapper">
+			<small><p class="help-block">These are players looking to join your lobby, invite them on your platform of choice!</p></small>
+			<div class="panel panel-primary">
+				<div class="panel-heading">Players looking to join</div>
+				<div class="panel-body">
+					<p class="text-muted" ng-if="playerNames.length == 0">No players</p>
+					<ul class="list-group joined-players-list" ng-if="playerNames.length > 0">
+						<li class="list-group-item" ng-repeat="(key, info) in playerNames">
+							<div class="row">
+								<div class="col-xs-12">
+									<i class="fa fa-user"></i>&nbsp;&nbsp;<span class="player-name">{{ info.player_name }}</span>
+								</div>
+							</div>
+
+							<span class="player_message text-muted">{{ info.message }}</span>
+
+							<div>
+								<small class="time-ago"><i><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;<time am-time-ago="info.date"></time></i></small>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="subheader">
+			<h1 class="page-header pull-left" style="border-bottom: 0; margin-bottom: 0">Active Lobbies<a href="#" class="search"><i class="fa fa-search"></i></a></h1>
+			<button class="btn btn-info btn-mobile-add-new pull-right" ng-show="!activeLobby" ng-click="openAddModal()"><i class="fa fa-plus"></i>&nbsp;Add lobby</button>
+			<button class="btn btn-mobile-remove pull-right" ng-show="activeLobby" ng-click="removeLobby()"><i class="fa fa-trash"></i>&nbsp;Remove my lobby</button>
+			<div class="pull-right platform-filter-list" ng-controller="labelBtnController">
+				<div class="btn-group filter-platforms">
+					<label class="btn active" ng-model="filter_platform" uib-btn-radio="''" ng-click="setPlatform(filter_platform)">All</label>
+					<label class="btn" ng-model="filter_platform" uib-btn-radio="'ps4'" ng-click="setPlatform(filter_platform)">PS4</label>
+					<label class="btn" ng-model="filter_platform" uib-btn-radio="'xbox'" ng-click="setPlatform(filter_platform)">XBOX</label>
+					<label class="btn" ng-model="filter_platform" uib-btn-radio="'pc'" ng-click="setPlatform(filter_platform)">PC</label>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="mobile-filter">
+			<h4 class="page-header">Filter</h4>
+			<div class="mobile-platform-filter-list">
+				<div ng-controller="labelBtnController">
+					<div class="btn-group filter-platforms">
+						<label class="btn active" ng-model="filter_mode" uib-btn-radio="''" ng-click="setMode(filter_mode)">All</label>
+						<label class="btn" ng-model="filter_mode" uib-btn-radio="'Multiplayer'" ng-click="setMode(filter_mode)">Multiplayer</label>
+						<label class="btn" ng-model="filter_mode" uib-btn-radio="'Zombies'" ng-click="setMode(filter_mode)">Zombies</label>
+					</div>
+				</div>
+			</div>
+			<div class="mobile-platform-filter-list">
+				<div ng-controller="labelBtnController">
+					<div class="btn-group filter-platforms">
+						<label class="btn" ng-model="filter_mic" uib-btn-checkbox="'true'" ng-click="setMic(filter_mic)">Mic</label>
+					</div>
+				</div>
+			</div>
+		</div>
 		<ul class="list-group lobby-list">
-			<li class="list-group-item animated animation" ng-repeat="(key, lobby) in lobbies | filter: filter_platform | filter: filter_mode | filter: filter_mic | orderBy: 'lobby.date':true" ng-class="{ 'my_lobby': currentUser == lobby.lobby_owner }">
+			<li ng-if="activeLobby" class="list-group-item my_lobby animated animation">
 				<div class="media">
 					<div class="media-body">
 						<div class="top">
 							<small class="text-muted">
-								<i><time am-time-ago="lobby.date"></time></i> by <strong>{{ lobby.player_name }}</strong> | 
-								<label class="label" ng-class="{ 'label-warning': lobby.game_mode == 'Multiplayer', 'label-secondary': lobby.game_mode == 'Zombies' }">
+								<i><time am-time-ago="my_lobby.date"></time></i> by <strong>You</strong> | 
+								<label class="label" ng-class="{ 'label-primary': my_lobby.game_mode == 'Multiplayer', 'label-secondary': my_lobby.game_mode == 'Zombies' }">
+									<strong>{{ my_lobby.game_mode }}</strong>
+								</label>
+							</small>
+							<div class="pull-right">
+								<a href="#">
+									<time>{{ my_lobby.expires | amCalendar }}</time> <i class="glyphicon glyphicon-time"></i>
+									<!-- bird/link/send -->
+								</a>
+							</div>
+						</div>
+						<div class="media-heading">
+							<strong>{{ my_lobby.title }}</strong>
+						</div>
+						<p class="list-group-item-text">{{ my_lobby.description }}</p>
+					</div>
+					<hr />
+					<label ng-if="my_lobby.mic == true" class="label label-primary"><i class="fa fa-microphone"></i></label>
+					<i ng-if="my_lobby.mic == false" class="text-muted fa fa-microphone-slash no-mic"></i>
+					<div class="pull-right">
+						<span>{{ players[my_lobby.lobby_owner] | numKeys }} players have joined this lobby</span>
+					</div>
+				</div>
+			</li>
+			<li class="list-group-item lobby animated animation" ng-if="lobby.lobby_owner != currentUser" ng-repeat="(key, lobby) in lobbies | filter: filter_platform | filter: filter_mode | filter: filter_mic | orderBy: 'lobby.date' | limitTo: limit">
+				<div class="media">
+					<div class="media-body">
+						<div class="top">
+							<small class="text-muted">
+								<i><time am-time-ago="lobby.date"></time></i> by <strong class="created-player-name">{{ lobby.player_name }}</strong> | 
+								<label class="label" ng-class="{ 'label-primary': lobby.game_mode == 'Multiplayer', 'label-secondary': lobby.game_mode == 'Zombies' }">
 									<strong>{{ lobby.game_mode }}</strong>
 								</label>
 							</small>
 							<div class="pull-right">
 								<a href="#">
-									<i class="glyphicon glyphicon-link" ng-if="currentUser != lobby.lobby_owner && currentUser != players[lobby.lobby_owner][currentUser].uid" ng-click="open(lobby.lobby_owner, lobby.title)"></i>
+									<span ng-if="currentUser != lobby.lobby_owner && currentUser != players[lobby.lobby_owner][currentUser].uid" ng-click="open(lobby.lobby_owner, lobby.title)"><small>Join&nbsp;&nbsp;</small><i class="glyphicon glyphicon-link"></i></span>
 									<small ng-if="currentUser == players[lobby.lobby_owner][currentUser].uid">You've joined this lobby  <i class="glyphicon glyphicon-saved"></i></small>
 									<i class="glyphicon glyphicon-cog" ng-if="currentUser == lobby.lobby_owner"></i>
 									<!-- bird/link/send -->
@@ -83,6 +132,56 @@
 				</div>
 			</li>
 		</ul>
+		<button class="btn btn-default center-block" ng-if="lobbies.length > limit" ng-click="loadMore()">Load More</button>
+	</div>
+	<div class="col-md-3">
+		<div class="add-wrapper">
+			<button class="btn btn-info btn-add-new btn-block" ng-show="!activeLobby" ng-click="openAddModal()">ADD NEW</button>
+			<button class="btn btn-remove btn-block" ng-show="activeLobby" ng-click="removeLobby()">Remove my lobby</button>
+		</div>
+		<div class="filter">
+			<h4 class="page-header">Filter</h4>
+			<form>
+				<div class="form-group">
+					<label class="control-label">Game Mode</label>
+					<select class="form-control input-sm" ng-model="filter_mode">
+						<option value="{{ undefined }}"></option>
+						<option value="multiplayer">Multiplayer</option>
+						<option value="zombies">Zombies</option>
+					</select>
+				</div>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" name="mic" ng-model="filter_mic" value="true"> Mic
+					</label>
+				</div>
+			</form>
+		</div>
+		<div ng-if="activeLobby" class="joined-players-wrapper">
+			<small><p class="help-block">These are players looking to join your lobby, invite them on your platform of choice!</p></small>
+			<div class="panel panel-primary">
+				<div class="panel-heading">Players looking to join</div>
+				<div class="panel-body">
+					<p class="text-muted" ng-if="playerNames.length == 0">No players</p>
+					<ul class="list-group joined-players-list" ng-if="playerNames.length > 0">
+						<li class="list-group-item" ng-repeat="(key, info) in playerNames">
+							<div class="row">
+								<div class="col-xs-12">
+									<i class="fa fa-user"></i>&nbsp;&nbsp;<span class="player-name">{{ info.player_name }}</span>
+								</div>
+							</div>
+							<div>
+								<small class="time-ago"><i><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;<time am-time-ago="info.date"></time></i></small>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="panel panel-primary">
+			<div class="panel-heading">Send us Feedback</div>
+		</div>
+		<small class="text-center"><p class="help-block">Please send any feedback or bugs to <u>tfisher9180@gmail.com</u> Enjoy!</p></small>
 	</div>
 </div>
 

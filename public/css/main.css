@@ -1,13 +1,550 @@
+/* 
+--------------------------------------------------------
+* =========== GENERAL STYLES =========== 
+*/
+
 html {
   height: 100%;
+  font-size: 100%;
 }
 body {
   min-height: 100%;
   position: relative;
-  font-family: 'Roboto', Helvetica, sans-serif;
-  color: #888888;
-  font-size: 15px;
+  font-family: 'Arial', "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 13px;
+  line-height: 1.3em;
+  color: #242729;
+  background-color: #f6f7f9;
 }
+a {
+  text-decoration: none!important;
+}
+footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0.45;
+}
+.fa-gamepad {
+  font-size: 1.75em;
+}
+.narrower {
+  padding-left: 60px;
+  padding-right: 60px;
+}
+.page-header {
+  font-size: 18px;
+  color: #242729;
+  line-height: 2.22;
+  margin: 0;
+  padding-bottom: 0;
+}
+.panel-primary {
+  border-color: #0099CC;
+  border-radius: 1px;
+}
+.panel-primary > .panel-heading {
+  background-color: #0099CC;
+  border-color: #0099CC;
+  font-size: 16px;
+  text-align: center;
+  border-radius: 0;
+}
+.panel-primary > .panel-body {
+  padding: 12px;
+}
+select {
+  border-radius: 1px;
+}
+.coming-soon {
+  position: relative;
+}
+.coming-soon .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+.coming-soon-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-weight: bold;
+  font-size: 20px;
+}
+.coming-soon {
+  -webkit-box-shadow: 0px 2px 20px 0px rgba(0,0,0,0.5);
+  box-shadow: 0px 2px 20px 0px rgba(0,0,0,0.5);
+  transition: all 0.1s linear;
+}
+.mobile-platform-filter-list {
+  display: none;
+}
+.btn-mobile-add-new {
+  display: none;
+}
+.mobile-filter {
+  display: none;
+}
+.modal-content {
+  box-shadow: none;
+  border-radius: 1px;
+}
+input[type="text"], select {
+  color: #3b4045!important;
+  line-height: 1.3!important;
+  font-size: 16px!important;
+  padding: 8px!important;
+  height: 35px!important;
+  border: 1px solid #bbc0c4!important;
+  border-radius: 1px!important;
+  cursor: auto!important;
+  background: #fff;
+  box-shadow: inset 0 1px 3px #eff0f1;
+  -webkit-box-shadow: inset 0 1px 3px #eff0f1;
+}
+textarea {
+  font-size: 16px!important;
+  color: #3b4045!important;
+  background: #fff;
+  border: 1px solid #bbc0c4!important;
+  border-radius: 1px!important;
+}
+input[type="text"]:focus, input[type="text"]:hover, select:focus, select:hover, textarea:hover, textarea:focus {
+  border: 1px solid lightblue!important;
+  box-shadow: inset 0 1px 3px #eff0f1!important;
+  -webkit-box-shadow: inset 0 1px 3px #eff0f1!important;
+}
+input[type="text"]:active, select:active, textarea:active {
+  outline: 0;
+  border-color: #07C;
+}
+.control-label {
+  font-size: 12px;
+}
+.btn-mobile-remove {
+  display: none;
+}
+.mobile-joined-players-wrapper {
+  display: none;
+}
+.close-no-header {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+}
+.btn-group > .btn:last-child:not(:first-child) {
+  border-radius: 1px;
+}
+p.viewing {
+  font-size: 11px;
+  color: #6a737c;
+  line-height: 20px;
+  border-radius: 1px;
+  text-align: center;
+}
+.media-heading {
+  color: #07C;
+}
+
+/* 
+* =========== END GENERAL STYLES =========== 
+--------------------------------------------------------
+*/
+
+/* 
+--------------------------------------------------------
+* =========== HOME STYLES =========== 
+*/
+
+.img-wrapper {
+  height: 200px;
+  width: 100%;
+}
+.img-wrapper-cod-infinite-warfare {
+  background-image: url('../img/cover_art/cod-infinite-warfare.jpeg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.img-wrapper-overwatch {
+  background-image: url('../img/cover_art/overwatch.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.img-wrapper-league-of-legends {
+  background-image: url('../img/cover_art/league-of-legends.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* 
+* =========== END HOME STYLES =========== 
+--------------------------------------------------------
+*/
+
+
+/* 
+--------------------------------------------------------
+* =========== NAVIGATION STYLES =========== 
+*/
+
+.navbar {
+  min-height: 34px;
+  height: 34px;
+}
+.navbar-default {
+  background-color: rgba(12,13,14,0.86);
+  border: 0;
+  border-radius: 0;
+}
+.navbar-default .navbar-nav > li > a {
+  line-height: 4px; /* 30px less than navbar height */
+  color: #777;
+}
+.navbar-default .navbar-nav > li > a:hover {
+  color: #777;
+  background-color: #3b4045;
+}
+.navbar-default .navbar-nav > li.active > a, .navbar-default .navbar-nav > li.active > a:hover, .navbar-default .navbar-nav > li > a:focus {
+  background-color: #eff0f1;
+  color: #777;
+}
+.navbar-brand {
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 4px;
+}
+.partridge-logo {
+  color: #fff;
+}
+.project-logo {
+  color: #33b5e5;
+  font-weight: bold;
+}
+
+/* 
+* =========== END NAVIGATION STYLES =========== 
+--------------------------------------------------------
+*/
+
+
+
+/* 
+--------------------------------------------------------
+* =========== LOBBY STYLES =========== 
+*/
+.subheader {
+  position: relative;
+  margin-top: 40px;
+  border-bottom: 1px solid #e4e6e8;
+  vertical-align: baseline;
+}
+.subheader .platform-filter-list {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+}
+.subheader .fa-search {
+  display: none;
+}
+.filter-platforms label {
+  color: #535a60;
+  padding: 10px 20px;
+  font-size: 12px;
+}
+.filter-platforms .active {
+  background-color: #fff!important;
+  border: 1px solid #e4e6e8!important;
+  border-bottom-color: #fff!important;
+  border-top-color: #ffbb33!important;
+  border-top-width: 2px!important;
+  box-shadow: none;
+  border-radius: 1px;
+  color: #0c0d0e;
+}
+.lobby-list {
+  margin-top: 12px;
+}
+.lobby-list > li:not(:last-child) {
+  margin-bottom: 10px;
+}
+.btn-remove {
+  transition: 0.3s background-color ease;
+  background-color: #9fa6ad;
+  border-radius: 1px;
+  color: #fff;
+}
+.btn-remove:hover {
+  background-color: #ffbb33;
+  color: #fff;
+}
+.btn-add-new, .btn-mobile-add-new, .btn-mobile-remove {
+  border-radius: 1px;
+}
+.my_lobby {
+  border-color: rgba(69,161,99,0.5);
+  margin-bottom: 5px;
+  background-color: #fffbec;
+}
+
+/* 
+* =========== END LOBBY STYLES =========== 
+--------------------------------------------------------
+*/
+
+
+
+/* 
+--------------------------------------------------------
+* =========== FILTER STYLES =========== 
+*/
+
+.filter {
+  margin: 40px 0;
+}
+.filter form {
+  padding-top: 20px;
+}
+
+/* 
+* =========== END FILTER STYLES =========== 
+--------------------------------------------------------
+*/
+
+
+/* 
+--------------------------------------------------------
+* =========== ADD MODAL STYLES =========== 
+*/
+
+.modal-body {
+  padding: 0;
+  overflow: hidden;
+}
+.modal-content {
+  background-color: #fff;
+}
+.uib-tab a {
+  border-radius: 0!important;
+}
+.tab-row {
+  padding-left: 0;
+  padding-right: 0;
+  position: relative;
+}
+.tab-row:first-child {
+  padding-left: 15px;
+}
+.tab-row:last-child {
+  padding-right: 15px;
+}
+.uib-tab {
+  padding: 20px 0;
+  background-color: #f5f5f5;
+}
+.tab-row-close {
+  position: relative;
+  background-color: #f5f5f5;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: center;
+  font-size: 20px;
+}
+.tab-pane .container-fluid {
+  padding-left: 40px!important;
+  padding-right: 40px!important;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  border: 1px solid #e4e6e8;
+}
+.uib-tab a:hover {
+  background-color: #f5f5f5;
+}
+.nav-tabs .active {
+  background-color: #fff!important;
+}
+.form-section-header {
+  font-weight: bold;
+  font-size: 100%;
+  margin: 0;
+  padding: 0;
+  color: #0C0D0E;
+  margin-bottom: 20px;
+}
+.form-step {
+  background-color: #5bc0de;
+  border: 2px solid #5bc0de;
+  height: 30px;
+  line-height: 26px;
+  margin: -2px 10px 0 0;
+  position: relative;
+  text-align: center;
+  width: 30px;
+  display: inline-block;
+  border-radius: 100px;
+  color: #fff;
+}
+
+
+/* 
+--------------------------------------------------------
+* =========== END ADD MODAL STYLES =========== 
+*/
+
+
+
+/* 
+--------------------------------------------------------
+* =========== JOINED PLAYERS LIST STYLES =========== 
+*/
+
+.joined-players-list > li {
+  border: 0;
+  padding: 0;
+}
+.joined-players-list > li:not(:last-child) {
+  border-bottom: 1px solid #eff0f1;
+}
+.joined-players-list .player-name, .joined-players-list .fa-user {
+  color: #0099CC;
+  line-height: 0.1;
+  font-weight: bold;
+}
+.joined-players-list time, .joined-players-list .glyphicon-time {
+  color: #848a91!important;
+}
+
+/* 
+* =========== END JOINED PLAYERS LIST STYLES =========== 
+--------------------------------------------------------
+*/
+
+/* 
+--------------------------------------------------------
+* =========== MOBILE MEDIA QUERIES =========== 
+*/
+
+@media (max-width: 768px) {
+  body {
+    padding-bottom: 100px;
+  }
+  .narrower {
+    padding-left: 15px!important;
+    padding-right: 15px!important;
+  }
+  .coming-soon {
+    margin-bottom: 25px;
+  }
+  .navbar-toggle {
+    display: none;
+  }
+  .navbar {
+    min-height: 44px;
+    height: 44px;
+  }
+  .navbar-brand {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 14px;
+  }
+  .platform-filter-list {
+    display: none;
+  }
+  .mobile-platform-filter-list {
+    display: block;
+    clear: both;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .mobile-platform-filter-list label {
+    background-color: #9fa6ad;
+    color: #fff;
+    text-align: center;
+    font-size: 14px;
+    margin: 5px;
+    padding: 4px 20px;
+  }
+  .mobile-platform-filter-list .filter-platforms {
+    border-spacing: 5px;
+  }
+  .mobile-platform-filter-list .active {
+    background-color: #f69c55!important;
+    color: #fff;
+        border: 1px solid #f69c55!important;
+    border-top-color: #f69c55!important;
+    border-right-color: #f69c55!important;
+  }
+  .subheader .page-header {
+    font-size: 14px;
+    color: #242729;
+    padding: 5px 0;
+    font-weight: bold;
+  }
+  .subheader {
+    border-bottom: 2px solid #d6d9dc;
+    padding: 0 10px;
+    background-color: #eff0f1;
+    margin-left: -15px;
+    margin-right: -15px;
+    margin-top: 20px;
+  }
+  .add-wrapper .btn-add-new {
+    display: none;
+  }
+  .btn-mobile-add-new, .btn-mobile-remove {
+    display: block;
+    margin-top: 6px;
+    font-size: 14px;
+    padding: 4px 8px;
+  }
+  .btn-mobile-remove {
+    background-color: #C91D2E;
+    border-color: #C91D2E;
+    color: #fff;
+    border: none;
+  }
+  .subheader .fa-search {
+    display: inline-block;
+    margin-left: 10px;
+    color: #6a737c;
+    opacity: 0.35;
+    font-weight: bold;
+  }
+  .mobile-filter {
+    display: none;
+  }
+  .mobile-filter .page-header {
+    margin-bottom: 10px;
+  }
+  .filter {
+    display: none;
+  }
+  .mobile-joined-players-wrapper {
+    display: block;
+  }
+  .joined-players-wrapper {
+    display: none;
+  }
+  .lobby {
+    margin-left: -5px;
+    margin-right: -5px;
+  }
+}
+
+/* 
+* =========== END MOBILE MEDIA QUERIES =========== 
+--------------------------------------------------------
+*/
+
+
 .push-notification {
   position: absolute;
   bottom: 45px;
@@ -35,6 +572,13 @@ body {
   -o-animation: fadeIn 1s;
   animation: fadeIn 1s;
 }
+.animation.ng-leave {
+  -webkit-animation: fadeOut 1s;
+  -moz-animation: fadeOut 1s;
+  -ms-animation: fadeOut 1s;
+  -o-animation: fadeOut 1s;
+  animation: fadeOut 1s;
+}
 .slide.ng-enter {
   -webkit-animation: fadeInUp 0.5s;
   -moz-animation: fadeInUp 0.5s;
@@ -51,10 +595,6 @@ body {
 }
 textarea {
   resize: none;
-}
-.my_lobby {
-  border-color: #00C851;
-  margin-bottom: 5px;
 }
 .add-wrapper {
   margin: 40px 0;
@@ -73,8 +613,6 @@ textarea {
 }
 .modal-form .modal-header {
   position: relative;
-  background-color: #2BBBAD;
-  color: #fafafa;
 }
 .modal-form .modal-header .close {
   position: absolute; 
@@ -82,9 +620,7 @@ textarea {
   top: 50%; 
   transform: translate(0, -50%);
 }
-.modal-form .modal-body, .modal-form .modal-footer, .modal-form .nav-tabs > li.active > a {
-  background-color: #f5f5f5;
-}
+
 .btn-next, .btn-submit {
   background-color: #4285F4;
 }
