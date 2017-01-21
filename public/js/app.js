@@ -46,12 +46,7 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 		}).
 		when('/:game', {
 			templateUrl: '/views/lobbies_test.html',
-			controller: 'lobbiesTestController',
-			resolve: {
-				game: function($route, $routeParams) {
-					return $route.current.params.game = true;
-				}
-			}
+			controller: 'test'
 		}).
 		otherwise({
 			redirectTo: '/'
@@ -66,9 +61,13 @@ app.controller('homeController', ['$scope', '$rootScope', function($scope, $root
 
 }]);
 
-app.controller('lobbiesTestController', ['$scope', function($scope, $routeParams) {
-	
-	$scope.game = $routeParams.game;
+app.controller('test', ['$scope', '$rootScope', '$routeParams', function($scope, $rootScope, $routeParams) {
+
+	$rootScope.game = $routeParams.game;
+	if ($routeParams.game == 'overwatch') {
+		$rootScope.gameFull = 'Overwatch: Origins Edition';
+		$rootScope.platforms = [ 'XBOX ONE', 'PS4', 'PC' ];
+	}
 
 }]);
 
@@ -158,12 +157,12 @@ app.controller('userController', ['$scope', '$rootScope', 'Authentication', '$co
 // Look for other firebase tutorials for proper structure
 // Use stackoverflow-like layout??
 
-app.controller('lobbiesController', ['$scope', '$timeout', '$rootScope', 'firebaseAuth', '$firebaseArray', '$firebaseObject', '$cookies', '$uibModal', function($scope, $timeout, $rootScope, firebaseAuth, $firebaseArray, $firebaseObject, $cookies, $uibModal) {
+app.controller('lobbiesController', ['$scope', '$timeout', '$rootScope', 'firebaseAuth', '$firebaseArray', '$firebaseObject', '$cookies', '$uibModal', '$routeParams', function($scope, $timeout, $rootScope, firebaseAuth, $firebaseArray, $firebaseObject, $cookies, $uibModal, $routeParams) {
 
 	var rootRef = firebase.database();
 
 	$scope.lobby = {};
-	$scope.game = 'COD: Infinite Warfare';
+	$scope.game = $routeParams.game;
 	$scope.limit = 10;
 
 	$scope.loadMore = function() {

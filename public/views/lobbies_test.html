@@ -1,1 +1,22 @@
-{{ game }}
+<header class="header-{{ game }}">
+	<div class="second-nav">
+		<ul class="nav nav-pills nav-justified">
+			<li><a href="#">Games</a></li>
+		</ul>
+	</div>
+	<div class="container narrower-home">
+		<div class="header-text">
+			<div class="media">
+				<div class="media-left media-middle">
+					<div class="img-wrapper img-wrapper-{{ game }}"></div>
+				</div>
+				<div class="media-body media-middle">
+					<h1 class="game-title">{{ gameFull }}</h1>
+					<ul class="list-inline">
+						<li ng-repeat="platform in platforms">{{ platform }}</li>
+					</ul>
+				</div>
+			</div>	
+		</div>
+	</div>
+</header>

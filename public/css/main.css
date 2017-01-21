@@ -191,6 +191,12 @@ p.viewing {
 .home-navbar {
   background-color: transparent;
 }
+.navbar-colored {
+  background-color: #f9f9f9;
+}
+.second-nav {
+  background-color: rgba(65,156,219, 0.65);
+}
 
 /* 
 * =========== END GENERAL STYLES =========== 
@@ -202,10 +208,6 @@ p.viewing {
 * =========== HOME STYLES =========== 
 */
 
-.img-wrapper {
-  height: 200px;
-  width: 100%;
-}
 .img-wrapper-cod-infinite-warfare {
   background-image: url('../img/cover_art/cod-infinite-warfare.jpeg');
   background-position: center center;
@@ -213,10 +215,15 @@ p.viewing {
   background-size: cover;
 }
 .img-wrapper-overwatch {
-  background-image: url('../img/cover_art/overwatch.jpg');
+  width: 180px;
+  height: 180px;
+  background-color: transparent;
+  border-radius: 20px;
+  background: url('../img/cover_art/overwatch4.jpg');
   background-position: center center;
-  background-repeat: no-repeat;
   background-size: cover;
+  background-repeat: no-repeat;
+  box-shadow: 0 10px 40px 0px rgba(0,0,0,0.75);
 }
 .img-wrapper-league-of-legends {
   background-image: url('../img/cover_art/league-of-legends.jpg');
@@ -225,7 +232,7 @@ p.viewing {
   background-size: cover;
 }
 .header-overwatch {
-  background: linear-gradient(rgba(72, 75, 89, 0.6), rgba(28, 30, 35, 0.95)), url('../img/cover_art/overwatch_header.jpg');
+  background: linear-gradient(rgba(72, 75, 89, 0.75), rgba(28, 30, 35, 0.90)), url('../img/cover_art/overwatch_header.jpg');
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -253,17 +260,6 @@ p.viewing {
 }
 .media-left {
   border-radius: 20px;
-}
-.img-wrapper {
-  width: 180px;
-  height: 180px;
-  background-color: transparent;
-  border-radius: 20px;
-  background: url('../img/cover_art/overwatch4.jpg');
-  background-position: center center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  box-shadow: 0 10px 40px 0px rgba(0,0,0,0.75);
 }
 .intro-text h1 {
   font-size: 38px;
@@ -312,9 +308,14 @@ p.viewing {
   font-weight: bold;
   line-height: 30px;
   text-transform: uppercase;
-  color: #0A96E5!important;
+  color: #f9f9f9!important;
   letter-spacing: -1px;
-  display: none;
+}
+.navbar-colored .navbar-brand {
+  color: #419cdb!important;
+}
+.navbar-colored .navbar-nav > li > a {
+  color: #D0D0D0;
 }
 
 /* 
