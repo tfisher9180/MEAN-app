@@ -44,17 +44,14 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 			templateUrl: '/views/home.html', // key/value syntax ... { is an object } ... key could also be considered a method
 			controller: 'homeController'
 		}).
-		when('/cod-infinite-warfare', {
-			templateUrl: '/views/lobbies.html',
-			controller: 'lobbiesController'/*,
+		when('/:game', {
+			templateUrl: '/views/lobbies_test.html',
+			controller: 'lobbiesTestController',
 			resolve: {
-				// controller will not be loaded until $requireSignIn resolves
-				"currentAuth": ['firebaseAuth', function(firebaseAuth) {
-					// if user is not signed in, throws error and resolve fails. This triggers a $routeChangeError handled in app.run() above.
-					return firebaseAuth.$requireSignIn();
-					// fixed a problem here. Originally was calling 'return Authentication.$requireSignIn();' however the $requireSignIn method is not attached to the factory, it's attached to the 'var auth' INSIDE of the factory. In order to get this to work had to create a new method inside of the factory called currentAuth(), which has access to the 'var auth'. Seeing this, we can abstract the creation of the auth var into its own factory and require it on the Authentication factory AND here.
-				}]
-			}*/	// angularJS feature, a list of dependencies that the $routeProvider service will wait for (until they're resolved). If the promises are resolved successfully, then everything will continue as normal, but if any are rejected then it creates an event called route change error and the controller will NOT be instantiated.
+				game: function($route, $routeParams) {
+					return $route.current.params.game = true;
+				}
+			}
 		}).
 		otherwise({
 			redirectTo: '/'
@@ -65,7 +62,13 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 
 app.controller('homeController', ['$scope', '$rootScope', function($scope, $rootScope) {
 
-	$rootScope.page = 'home';
+	$scope.selectedGame = ''; // sets initial option to the option with no value
+
+}]);
+
+app.controller('lobbiesTestController', ['$scope', function($scope, $routeParams) {
+	
+	$scope.game = $routeParams.game;
 
 }]);
 

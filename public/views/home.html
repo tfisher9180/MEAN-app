@@ -2,26 +2,31 @@
 	<div class="container narrower-home">
 		<div class="intro-text text-center">
 			<h1>Never play alone again</h1>
-			<h6>A real-time group finding service for gamers. Browse a variety of games,</h6>
-			<h6>team up, and play to win! Unlocking your true gamer potential starts here.</h6>
+			<div class="normal-intro-text">
+				<h6>A real-time group finding service for gamers. Browse a variety of games,</h6>
+				<h6>team up, and play to win! Unlocking your true gamer potential starts here.</h6>
+			</div>
+			<div class="mobile-intro-text">
+				<h6>A real-time group finding service for gamers. Browse a variety of games, team up, and play to win! Unlocking your true gamer potential starts here.</h6>
+			</div>
 			<div class="cta">
-				<form class="form-horizontal">
+				<form class="form-horizontal" novalidate>
 					<div class="box">
 						<div class="form-group col-md-offset-1">
 							<label class="control-label col-md-4">Choose your game:</label>
 							<div class="col-md-6">
-								<select name="cta-game" class="form-control">
-									<option>-- Choose one --</option>
-									<option>Overwatch</option>
-									<option>COD: Infinite Warfare</option>
-									<option>COD: Modern Warfare Remastered</option>
-									<option>Battlefield 1</option>
-									<option>League of Legends</option>
+								<select name="cta-game" ng-model="selectedGame" class="form-control">
+									<option value="">-- Choose one --</option>
+									<option value="overwatch">Overwatch</option>
+									<option value="cod-infinite-warfare">COD: Infinite Warfare</option>
+									<option value="cod-modern-warfare-remastered">COD: Modern Warfare Remastered</option>
+									<option value="battlefield-1">Battlefield 1</option>
+									<option value="league-of-legends">League of Legends</option>
 								</select>
 							</div>
 						</div>
 					</div>
-					<button class="btn btn-primary">Find Groups</button>
+					<a class="btn btn-primary" href="./{{ selectedGame }}">Find Groups</a>
 				</form>
 			</div>
 		</div>

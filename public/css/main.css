@@ -185,6 +185,12 @@ p.viewing {
   text-transform: uppercase;
   font-size: 1.25em;
 }
+.mobile-intro-text {
+  display: none;
+}
+.home-navbar {
+  background-color: transparent;
+}
 
 /* 
 * =========== END GENERAL STYLES =========== 
@@ -308,6 +314,7 @@ p.viewing {
   text-transform: uppercase;
   color: #0A96E5!important;
   letter-spacing: -1px;
+  display: none;
 }
 
 /* 
@@ -520,20 +527,49 @@ p.viewing {
     padding-left: 15px!important;
     padding-right: 15px!important;
   }
+  .narrower-home {
+    padding-left: 15px!important;
+    padding-right: 15px!important;
+  }
   .coming-soon {
     margin-bottom: 25px;
   }
-  .navbar-toggle {
+  .fa-globe {
     display: none;
+  }
+  .not-mobile {
+    display: none;
+  }
+  .navbar-toggle {
+    color: #f9f9f9;
+    border: none;
+    font-size: 22px;
+    float: none;
+    position: relative;
+  }
+  .navbar-collapse.in {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  .navbar-toggle .fa-bars, .navbar-toggle .fa-times {
+    -webkit-transition: all 0.3s ease!important;
+    transition: all 0.3s ease!important;
+  }
+  .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+    background-color: transparent;
   }
   .navbar {
     min-height: 44px;
     height: 44px;
   }
   .navbar-brand {
-    font-size: 14px;
     font-weight: bold;
     line-height: 14px;
+    float: none;
+    font-size: 18px;
+    padding: 0;
+  }
+  .navbar-header {
+    padding-left: 15px;
   }
   .platform-filter-list {
     display: none;
@@ -616,6 +652,27 @@ p.viewing {
   .lobby {
     margin-left: -5px;
     margin-right: -5px;
+  }
+  .mobile-intro-text {
+    display: block;
+  }
+  .normal-intro-text {
+    display: none;
+  }
+  .cta .box {
+    margin-left: 15px;
+    margin-right: 15px;
+    padding: 5%;
+  }
+  .cta {
+    margin-top: 40px;
+  }
+  .btn-primary {
+    margin: 0 auto;
+    text-align: center;
+    display: block;
+    padding: 8px 14px;
+    width: 65%;
   }
 }
 

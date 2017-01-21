@@ -9,4 +9,8 @@ $(document).ready(function() {
 		e.preventDefault();
 	});
 
+	$('.navbar-toggle').click(function() {
+		$(this).find('.fa').toggleClass('fa-times fa-bars');
+	});
+
 });
