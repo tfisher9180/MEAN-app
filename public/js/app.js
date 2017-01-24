@@ -61,19 +61,35 @@ app.controller('homeController', ['$scope', '$rootScope', function($scope, $root
 
 }]);
 
-app.controller('test', ['$scope', '$rootScope', '$routeParams', function($scope, $rootScope, $routeParams) {
+app.controller('test', ['$scope', '$rootScope', '$routeParams', '$uibModal', function($scope, $rootScope, $routeParams, $uibModal) {
 
 	$rootScope.game = $routeParams.game;
 	if ($routeParams.game == 'overwatch') {
 		$rootScope.gameFull = 'Overwatch: Origins Edition';
 		$rootScope.platforms = [ 'XBOX ONE', 'PS4', 'PC' ];
+		$rootScope.modes = [ 'Normal', 'Competitive', 'Arcade' ];
 	}
+
+	$scope.openStartModal = function() {
+		var modalInstance = $uibModal.open({
+			templateUrl: '/views/startLobbyModal.html',
+			controller: 'startLobbyModalController'
+		});
+	};
 
 }]);
 
-app.controller('platformFilterController', ['$scope', function($scope) {
+app.controller('filterController', ['$scope', function($scope) {
 
 	
+
+}]);
+
+app.controller('startLobbyModalController', ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
+
+	$scope.close = function() {
+		$uibModalInstance.close();
+	};
 
 }]);
 
@@ -254,7 +270,7 @@ app.controller('lobbiesController', ['$scope', '$timeout', '$rootScope', 'fireba
 	});
 }]);
 
-app.controller('joinLobbyModalController', ['$rootScope', '$scope', '$firebaseArray', '$firebaseObject', '$uibModalInstance', 'key', 'title', '$cookies', function($rootScope, $scope, $firebaseArray, $firebaseObject, $uibModalInstance, key, title, $cookies) {
+app.controller('addNewModalController', ['$rootScope', '$scope', '$firebaseArray', '$firebaseObject', '$uibModalInstance', 'key', 'title', '$cookies', function($rootScope, $scope, $firebaseArray, $firebaseObject, $uibModalInstance, key, title, $cookies) {
 
 	var rootRef = firebase.database();
 	var currentUser = $rootScope.currentUser;

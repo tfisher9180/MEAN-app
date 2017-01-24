@@ -44,7 +44,7 @@
 					<h2>Lobbies (76)</h2>
 				</div>
 				<div class="pull-right">
-					<button class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Start a lobby</button>
+					<button class="btn btn-primary" ng-click="openStartModal()"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Start a lobby</button>
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -58,8 +58,14 @@
 						</div>
 					</div>
 					<div class="filters">
-						<div class="list-group" ng-controller="platformFilterController">
+						<h5 class="head">FILTERS</h5>
+						<div class="list-group" ng-controller="filterController">
+							<button type="button" class="list-group-item active" value="{{ undefined }}" ng-model="filterPlatform">All</button>
 							<button type="button" class="list-group-item" value="{{ platform }}" ng-model="filterPlatform" ng-repeat="platform in platforms">{{ platform }}</button>
+						</div>
+						<div class="list-group" ng-controller="filterController">
+							<button type="button" class="list-group-item active" ng-model="filterMode" value="{{ undefined }}" ng-model="filterMode">All</button>
+							<button type="button" class="list-group-item" ng-model="filterMode" ng-repeat="mode in modes" value="{{ mode }}">{{ mode }}</button>
 						</div>
 					</div>
 				</div>

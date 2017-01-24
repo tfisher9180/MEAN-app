@@ -10,11 +10,12 @@ html {
 body {
   min-height: 100%;
   position: relative;
-  font-family: 'Montserrat', 'Roboto', 'Arial', "Helvetica Neue", Helvetica, sans-serif;
+  font-family: 'Roboto', 'Montserrat', 'Arial', "Helvetica Neue", Helvetica, sans-serif;
   font-size: 13px;
   line-height: 1.3em;
   color: #555;
-  background-color: #f6f7f9;
+  background-color: #f9f9f9;
+  font-weight: 300;
 }
 h1, h2, h3, h4, h5, h6 {
   padding: 0;
@@ -109,12 +110,6 @@ select {
 }
 input[type="text"], select {
   color: #3b4045!important;
-  line-height: 1.3!important;
-  font-size: 16px!important;
-  padding: 8px!important;
-  height: 35px!important;
-  border: 1px solid #bbc0c4!important;
-  border-radius: 1px!important;
   cursor: auto!important;
   background: #fff;
   box-shadow: inset 0 1px 3px #eff0f1;
@@ -237,7 +232,11 @@ p.viewing {
 .btn-primary {
   padding: 6px 22px;
   font-size: 12px;
-  background-color: #1c92d9;
+  background: linear-gradient(to bottom,  #0098e2 0%,#008fdf 48%,#0083da 100%);
+  border-color: #1c92d9;
+}
+.btn-primary:hover {
+  background: linear-gradient(to bottom,#0089e1 0%,#0098e2 100%);
   border-color: #1c92d9;
 }
 .platform-img-wrapper {
@@ -259,13 +258,13 @@ p.viewing {
   position: relative;
 }
 .mode-img-arcade {
-  background-color: #41db81;
+  background-color: #42C37A; /* #41db81 */
 }
 .mode-img-competitive {
-  background-color: #6041db;
+  background-color: #5C43C5; /* #6041db */
 }
 .mode-img-normal {
-  background-color: #db5141;
+  background-color: #C35045; /* #db5141 */
 }
 .mode-img-wrapper span {
   position: absolute;
@@ -277,14 +276,14 @@ p.viewing {
   font-size: 1.1rem;
 }
 .lobby .lobby-title {
-  color: #419CDB;
+  color: #0095e5;
   font-weight: bold;
 }
 .lobby .lobby-title i {
   color: #90959D;
 }
 .lobby .lobby-time {
-  color: #D0D0D0;
+  color: #a4a4a4;
   font-size: 90%;
   font-weight: normal;
 }
@@ -302,6 +301,54 @@ p.viewing {
 }
 .lobby:nth-child(even) {
   background-color: transparent;
+}
+.progress-bar {
+  color: #f9f9f9;
+}
+.label-normal {
+  background-color: #db5141;
+}
+.label-arcade {
+  background-color: #41db81;
+}
+.label-competitive {
+  background-color: #6041db;
+}
+.search-bar {
+  margin-bottom: 25px;
+}
+hr {
+  border-color: #ebebeb;
+}
+input[name="search"] {
+  border-radius: 20px;
+}
+.input-group-addon {
+  border-radius: 20px;
+}
+.filters .head {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  margin-bottom: 15px;
+}
+.filters button {
+  background-color: transparent;
+  font-size: 14px;
+}
+.filters .list-group-item {
+  border: none;
+}
+.filters button.active {
+  background-color: #f3f3f3;
+  border: 2px solid #e8e8e8;
+  color: #333;
+  font-weight: bold;
+}
+.filters button.active:hover {
+  background-color: #f3f3f3;
+  border-color: #e8e8e8;
+  color: #333;
 }
 
 
