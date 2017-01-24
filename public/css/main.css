@@ -178,13 +178,6 @@ p.viewing {
 .cta .control-label {
   font-size: 16px;
 }
-.btn-primary {
-  background-color: #0A96E5;
-  border-color: #0A96E5;
-  padding: 0.75% 2%;
-  text-transform: uppercase;
-  font-size: 1.25em;
-}
 .mobile-intro-text {
   display: none;
 }
@@ -195,11 +188,122 @@ p.viewing {
   background-color: #f9f9f9;
 }
 .second-nav {
-  background-color: rgba(65,156,219, 0.65);
+  background-color: rgba(65,156,219, 0.95);
+}
+.second-nav li a {
+  color: #f9f9f9!important;
+  padding: 14px 25px;
+}
+.second-nav li a:hover {
+  background-color: #1c92d9;
+  border-radius: 0;
+}
+.second-nav li.active a {
+  border-radius: 0;
+  box-shadow: inset 0 -3px 0 0 #f9f9f9;
 }
 .third-nav {
-  background-color: #D0D0D0;
+  background-color: rgba(208, 208, 208, 0.4);
 }
+.third-nav li a {
+  color: #484b59;
+  padding: 14px 25px;
+  border-radius: 0;
+  font-size: 14px;
+}
+.third-nav li a:hover, .third-nav li.active a, .third-nav li.active a:hover {
+  background-color: transparent;
+  box-shadow: inset 0 -3px 0 0 rgb(65, 156, 219);
+  color: #484b59;
+}
+.game-title {
+  line-height: 1.5;
+}
+.available-platforms li {
+  color: rgba(255, 255, 255, 0.75)!important;
+}
+.header-text .media-body {
+  padding-left: 10px!important;
+}
+.page .page-header {
+  margin-top: 24px;
+  border-bottom: 0;
+}
+.page .page-header h2 {
+  color: #484b59;
+  font-size: 20px;
+  padding-top: 15px;
+}
+.btn-primary {
+  padding: 6px 22px;
+  font-size: 12px;
+  background-color: #1c92d9;
+  border-color: #1c92d9;
+}
+.platform-img-wrapper {
+  width: 31px;
+  height: 30px;
+  background-color: #419CDB;
+  border-radius: 50%;
+}
+.platform-img-wrapper img {
+  height: 100%;
+  width: auto;
+  border-radius: 50%;
+  padding: 20%;
+}
+.mode-img-wrapper {
+  width: 31px;
+  height: 30px;
+  border-radius: 50%;
+  position: relative;
+}
+.mode-img-arcade {
+  background-color: #41db81;
+}
+.mode-img-competitive {
+  background-color: #6041db;
+}
+.mode-img-normal {
+  background-color: #db5141;
+}
+.mode-img-wrapper span {
+  position: absolute;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #f9f9f9;
+  font-size: 1.1rem;
+}
+.lobby .lobby-title {
+  color: #419CDB;
+  font-weight: bold;
+}
+.lobby .lobby-title i {
+  color: #90959D;
+}
+.lobby .lobby-time {
+  color: #D0D0D0;
+  font-size: 90%;
+  font-weight: normal;
+}
+.lobby .description {
+  color: #484b59;
+  font-weight: normal;
+  margin-bottom: 0;
+}
+.lobby .media-body {
+  padding-left: 15px;
+}
+.lobby {
+  padding: 22px 24px;
+  border: none;
+}
+.lobby:nth-child(even) {
+  background-color: transparent;
+}
+
 
 /* 
 * =========== END GENERAL STYLES =========== 
@@ -235,7 +339,8 @@ p.viewing {
   background-size: cover;
 }
 .header-overwatch {
-  background: linear-gradient(rgba(72, 75, 89, 0.75), rgba(28, 30, 35, 0.90)), url('../img/cover_art/overwatch_header.jpg');
+  /*background: linear-gradient(rgba(72, 75, 89, 0.75), rgba(28, 30, 35, 0.90)), url('../img/cover_art/overwatch_header.jpg');*/
+  background: linear-gradient(rgba(64, 63, 63, 0.75), rgba(20, 20, 20, 0.85)), url('../img/cover_art/overwatch_header.jpg');
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -678,6 +783,33 @@ p.viewing {
     padding: 8px 14px;
     width: 65%;
   }
+  .second-nav .container {
+    padding: 0!important;
+    margin: 0!important;
+  }
+  .second-nav li a {
+    padding: 14px 16px;
+  }
+  .third-nav .container {
+    padding: 0!important;
+    margin: 0!important;
+  }
+  .header-text .media-left {
+    display: block;
+    text-align: center;
+    float: none;
+    padding-right: 0;
+    margin-bottom: 10px;
+  }
+  .header-text .media-left .img-wrapper {
+    margin: 0 auto!important;
+    width: 150px;
+    height: 150px;
+  }
+  .header-text {
+    padding: 50px 0;
+  }
+
 }
 
 /* 
