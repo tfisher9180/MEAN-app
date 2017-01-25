@@ -1,19 +1,34 @@
-<form id="add-new-modal" name="addForm" class="modal-form" ng-submit="addLobby()" novalidate>
+<form id="start-new-modal" name="addForm" class="modal-form" ng-submit="addLobby()" novalidate>
+	<div class="modal-header">
+		<h2>Create your lobby</h2>
+		<button type="button" class="close" ng-click="close()"><span>&times;</span></button>
+	</div>
 	<div class="modal-body">
 		<div class="form-group">
-			<label class="platform">Platform</label>
+			<label class="col-md-2 button-label">Platform</label>
 			<div class="btn-group">
-				<label class="btn" ng-model="startPlatform" uib-btn-radio="'ps4'" ng-click="setPlatform(startPlatform)">PS4</label>
-				<label class="btn" ng-model="startPlatform" uib-btn-radio="'xbox'" ng-click="setPlatform(startPlatform)">XBOX</label>
-				<label class="btn" ng-model="startPlatform" uib-btn-radio="'pc'" ng-click="setPlatform(startPlatform)">PC</label>
+				<label class="btn btn-primary" ng-model="startPlatform" uib-btn-radio="'{{ platform }}'" ng-click="setPlatform(startPlatform)" ng-repeat="platform in platforms">{{ platform }}</label>
 			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-2 button-label">Mode</label>
+			<div class="btn-group">
+				<label class="btn btn-primary" ng-model="startMode" uib-btn-radio="'{{ mode }}'" ng-click="setMode(startMode)" ng-repeat="mode in modes">{{ mode }}</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<label>Title</label>
+			<input type="text" name="title" placeholder="The lobby title" class="form-control" ng-model="title">
+		</div>
+		<div class="form-group">
+			<label>Description</label>
+			<textarea rows="4" name="description" ng-model="description" class="form-control" placeholder="A little more detail..."></textarea>
 		</div>
 	</div>
 	<div class="modal-footer">
-		<button type="button" class="btn btn-default btn-prev" ng-show="active > 0" ng-click="active = active - 1">Previous</button>
-		<button type="button" class="btn btn-default" ng-if="active == 0" ng-click="close()">Cancel</button>
-		<button type="button" class="btn btn-primary btn-next" ng-show="active == 0" ng-disabled="addForm.platform.$invalid || addForm.mode.$invalid" ng-click="active = active + 1">Next</button>
-		<button type="button" class="btn btn-primary btn-next" ng-show="active == 1" ng-disabled="addForm.name.$invalid" ng-click="active = active + 1">Next</button>
-		<button type="submit" class="btn btn-primary btn-submit" ng-if="active == 2" ng-disabled="addForm.title.$invalid">Submit</button>
+		<div class="pull-left">
+			<button type="button" class="btn btn-default" ng-click="close()">Cancel</button>
+			<button type="submit" class="btn btn-primary btn-submit" ng-disabled="addForm.title.$invalid">Create lobby</button>
+		</div>
      </div>
 </form>

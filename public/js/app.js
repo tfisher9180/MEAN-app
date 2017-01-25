@@ -61,7 +61,7 @@ app.controller('homeController', ['$scope', '$rootScope', function($scope, $root
 
 }]);
 
-app.controller('test', ['$scope', '$rootScope', '$routeParams', '$uibModal', 'gameInfo', function($scope, $rootScope, $routeParams, $uibModal, gameInfo) {
+app.controller('test', ['$scope', '$rootScope', '$routeParams', '$uibModal', function($scope, $rootScope, $routeParams, $uibModal) {
 
 	$rootScope.game = $routeParams.game;
 	if ($routeParams.game == 'overwatch') {
@@ -91,6 +91,14 @@ app.controller('startLobbyModalController', ['$scope', '$uibModalInstance', func
 
 	$scope.close = function() {
 		$uibModalInstance.close();
+	};
+
+	$scope.setPlatform = function(platform) {
+		$scope.platform = platform;
+	};
+
+	$scope.setMode = function(mode) {
+		$scope.mode = mode;
 	};
 
 
