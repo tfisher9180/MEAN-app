@@ -1,68 +1,13 @@
 <form id="add-new-modal" name="addForm" class="modal-form" ng-submit="addLobby()" novalidate>
 	<div class="modal-body">
-		<uib-tabset active="active" justified="true">
-			<div class="row">
-				<div class="col-xs-3 tab-row text-center">
-					<uib-tab index="0" heading="Game" classes="">
-						<div class="container-fluid">
-							<h3 class="form-section-header"><span class="form-step">1</span>Game Details</h3>
-							<div class="form-group">
-								<label class="control-label">Platform</label>
-								<select class="form-control" name="platform" ng-model="lobby.platform" required>
-									<option value="{{ undefined }}"></option>
-									<option value="PS4">PS4</option>
-									<option value="XBOX">XBOX</option>
-									<option value="PC">PC</option>
-								</select>
-							</div>
-							<div class="form-group">
-								<label class="control-label">Game Mode</label>
-								<select class="form-control" name="mode" ng-model="lobby.mode" required>
-									<option value="{{ undefined }}"></option>
-									<option value="Multiplayer">Multiplayer</option>
-									<option value="Zombies">Zombies</option>
-								</select>
-							</div>
-						</div>
-					</uib-tab>
-				</div>
-				<div class="col-xs-3 tab-row text-center">
-					<uib-tab index="1" heading="Player">
-						<div class="container-fluid">
-							<h3 class="form-section-header"><span class="form-step">2</span>Player Details</h3>
-							<div class="form-group">
-								<label class="control-label">Player Name</label>
-								<input type="text" name="name" class="form-control" ng-model="lobby.name" ng-required="true">
-								<span class="help-block">This is how other players will contact you (in-game name, PSN ID, Username, etc</span>
-							</div>
-						</div>
-					</uib-tab>
-				</div>
-				<div class="col-xs-3 tab-row text-center">
-					<uib-tab index="2" heading="Details">
-						<div class="container-fluid">
-							<h3 class="form-section-header"><span class="form-step">3</span>Lobby Details</h3>
-							<div class="form-group">
-								<label class="control-label">Title</label>
-								<input type="text" name="title" class="form-control" ng-model="lobby.title" required>
-							</div>
-							<div class="form-group">
-								<label class="control-label">Description</label>
-								<textarea name="description" class="form-control" ng-model="lobby.description" rows="5"></textarea>
-							</div>
-							<div class="checkbox">
-								<label class="col-sm-8 col-sm-offset-2">
-									<input type="checkbox" name="mic" ng-model="lobby.mic" value="true">Is voice required?
-								</label>
-							</div>
-						</div>
-					</uib-tab>
-				</div>
-				<a class="col-xs-3 tab-row tab-row-close" href="#" ng-click="close()">
-					<span class="close-modal">&times;</span>
-				</a>
+		<div class="form-group">
+			<label class="platform">Platform</label>
+			<div class="btn-group">
+				<label class="btn" ng-model="startPlatform" uib-btn-radio="'ps4'" ng-click="setPlatform(startPlatform)">PS4</label>
+				<label class="btn" ng-model="startPlatform" uib-btn-radio="'xbox'" ng-click="setPlatform(startPlatform)">XBOX</label>
+				<label class="btn" ng-model="startPlatform" uib-btn-radio="'pc'" ng-click="setPlatform(startPlatform)">PC</label>
 			</div>
-		</uib-tabset>
+		</div>
 	</div>
 	<div class="modal-footer">
 		<button type="button" class="btn btn-default btn-prev" ng-show="active > 0" ng-click="active = active - 1">Previous</button>

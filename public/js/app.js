@@ -61,7 +61,7 @@ app.controller('homeController', ['$scope', '$rootScope', function($scope, $root
 
 }]);
 
-app.controller('test', ['$scope', '$rootScope', '$routeParams', '$uibModal', function($scope, $rootScope, $routeParams, $uibModal) {
+app.controller('test', ['$scope', '$rootScope', '$routeParams', '$uibModal', 'gameInfo', function($scope, $rootScope, $routeParams, $uibModal, gameInfo) {
 
 	$rootScope.game = $routeParams.game;
 	if ($routeParams.game == 'overwatch') {
@@ -91,11 +91,18 @@ app.controller('startLobbyModalController', ['$scope', '$uibModalInstance', func
 		$uibModalInstance.close();
 	};
 
+
+
 }]);
 
 // Factory to return the $firebaseAuth service. Abstracted this into it's own factory so that the $routeProvider resolve property could immediately call the $requireSignIn helper method instead of having to create a new function in the userController that had access to the 'var auth = $firebaseAuth();'
 app.factory('firebaseAuth', ['$firebaseAuth', function($firebaseAuth) {
 	return $firebaseAuth();
+}]);
+
+app.factory('gameInfo', [function() {
+	var platforms = [ 'XBOX ONE', 'PS4', 'PC' ];
+	return platforms;
 }]);
 
 /*
