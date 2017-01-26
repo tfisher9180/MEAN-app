@@ -85,20 +85,21 @@ app.controller('filterController', ['$scope', function($scope) {
 
 }]);
 
-app.controller('startLobbyModalController', ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
+app.controller('startLobbyModalController', ['$scope', '$rootScope', '$uibModalInstance', function($scope, $rootScope, $uibModalInstance) {
 
-	
+	$scope.selectedPlatform = {};
+	$scope.selectedMode = {};
 
 	$scope.close = function() {
 		$uibModalInstance.close();
 	};
 
 	$scope.setPlatform = function(platform) {
-		$scope.platform = platform;
+		$scope.selectedPlatform = platform;
 	};
 
 	$scope.setMode = function(mode) {
-		$scope.mode = mode;
+		$rootScope.mode = mode;
 	};
 
 
