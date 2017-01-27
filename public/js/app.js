@@ -163,6 +163,8 @@ app.controller('lobbiesController', ['$scope', '$timeout', '$rootScope', 'fireba
 	$scope.game = 'COD: Infinite Warfare';
 	$scope.limit = 10;
 
+	$rootScope.currentTime = new Date();
+
 	$scope.loadMore = function() {
 		$scope.limit = $scope.limit + 10;
 	};

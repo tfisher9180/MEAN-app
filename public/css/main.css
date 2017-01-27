@@ -151,6 +151,9 @@ p.viewing {
 .media-heading {
   color: #07C;
 }
+.inactive {
+  opacity: 0.4;
+}
 
 /* 
 * =========== END GENERAL STYLES =========== 

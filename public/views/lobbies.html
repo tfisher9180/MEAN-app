@@ -99,7 +99,7 @@
 					</div>
 				</div>
 			</li>
-			<li class="list-group-item lobby animated animation" ng-if="lobby.lobby_owner != currentUser" ng-repeat="(key, lobby) in lobbies | filter: filter_platform | filter: filter_mode | filter: filter_mic | orderBy: '-date' | limitTo: limit">
+			<li class="list-group-item lobby animated animation" ng-if="lobby.lobby_owner != currentUser" ng-repeat="(key, lobby) in lobbies | filter: filter_platform | filter: filter_mode | filter: filter_mic | orderBy: '-date' | limitTo: limit" ng-class="{ inactive: currentTime > lobby.expires }">
 				<div class="media">
 					<div class="media-body">
 						<div class="top">
@@ -111,7 +111,8 @@
 							</small>
 							<div class="pull-right">
 								<a href="#">
-									<span ng-if="currentUser != lobby.lobby_owner && currentUser != players[lobby.lobby_owner][currentUser].uid" ng-click="open(lobby.lobby_owner, lobby.title)"><small>Join&nbsp;&nbsp;</small><i class="glyphicon glyphicon-link"></i></span>
+									<span ng-if="currentTime > lobby.expires" style="cursor: not-allowed;">Lobby has expired</span>
+									<span ng-if="currentUser != lobby.lobby_owner && currentUser != players[lobby.lobby_owner][currentUser].uid && currentTime < lobby.expires" ng-click="open(lobby.lobby_owner, lobby.title)"><small>Join&nbsp;&nbsp;</small><i class="glyphicon glyphicon-link"></i></span>
 									<small ng-if="currentUser == players[lobby.lobby_owner][currentUser].uid">You've joined this lobby  <i class="glyphicon glyphicon-saved"></i></small>
 									<i class="glyphicon glyphicon-cog" ng-if="currentUser == lobby.lobby_owner"></i>
 									<!-- bird/link/send -->
