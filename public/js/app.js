@@ -44,7 +44,7 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 			templateUrl: '/views/home.html', // key/value syntax ... { is an object } ... key could also be considered a method
 			controller: 'homeController'
 		}).
-		when('/cod-infinite-warfare', {
+		when('/:game', {
 			templateUrl: '/views/lobbies.html',
 			controller: 'lobbiesController'/*,
 			resolve: {
@@ -55,6 +55,10 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 					// fixed a problem here. Originally was calling 'return Authentication.$requireSignIn();' however the $requireSignIn method is not attached to the factory, it's attached to the 'var auth' INSIDE of the factory. In order to get this to work had to create a new method inside of the factory called currentAuth(), which has access to the 'var auth'. Seeing this, we can abstract the creation of the auth var into its own factory and require it on the Authentication factory AND here.
 				}]
 			}*/	// angularJS feature, a list of dependencies that the $routeProvider service will wait for (until they're resolved). If the promises are resolved successfully, then everything will continue as normal, but if any are rejected then it creates an event called route change error and the controller will NOT be instantiated.
+		}).
+		when('/overwatch', {
+			templateUrl: '/views/lobbies.html',
+			controller: 'lobbiesController'
 		}).
 		otherwise({
 			redirectTo: '/'
@@ -155,12 +159,39 @@ app.controller('userController', ['$scope', '$rootScope', 'Authentication', '$co
 // Look for other firebase tutorials for proper structure
 // Use stackoverflow-like layout??
 
-app.controller('lobbiesController', ['$scope', '$timeout', '$rootScope', 'firebaseAuth', '$firebaseArray', '$firebaseObject', '$cookies', '$uibModal', function($scope, $timeout, $rootScope, firebaseAuth, $firebaseArray, $firebaseObject, $cookies, $uibModal) {
+app.factory('gameInfo', function() {
+
+	return {
+		get: function(game) {
+			var gameInfo;
+			if (game == 'cod-infinite-warfare') {
+				gameInfo = {
+					fullName: 'COD: Infinite Warfare',
+					platforms: ['PS4', 'XBOX', 'PC']
+				} 
+			}
+			if (game == 'overwatch') {
+				gameInfo = {
+					fullName: 'Overwatch: Origins Edition',
+					platforms: ['PS4', 'XBOX', 'PC']
+				}
+			}
+			return gameInfo;
+		}
+	}
+
+});
+
+app.controller('lobbiesController', ['gameInfo', '$routeParams', '$scope', '$timeout', '$rootScope', 'firebaseAuth', '$firebaseArray', '$firebaseObject', '$cookies', '$uibModal', function(gameInfo, $routeParams, $scope, $timeout, $rootScope, firebaseAuth, $firebaseArray, $firebaseObject, $cookies, $uibModal) {
+
+	var selectedGame = $rootScope.selectedGame = $routeParams.game;
+	var gameInfo = gameInfo.get(selectedGame);
 
 	var rootRef = firebase.database();
 
 	$scope.lobby = {};
-	$scope.game = 'COD: Infinite Warfare';
+	$scope.game = gameInfo.fullName;
+	$scope.availablePlatforms = gameInfo.platforms;
 	$scope.limit = 10;
 
 	$rootScope.currentTime = new Date();
@@ -177,7 +208,7 @@ app.controller('lobbiesController', ['$scope', '$timeout', '$rootScope', 'fireba
 			console.log("Signed in as:", firebaseUser.uid);
 			$rootScope.currentUser = firebaseUser.uid;
 
-			var lobbyPlayersRef = rootRef.ref('lobby_players');
+			var lobbyPlayersRef = rootRef.ref('lobby_players/'+selectedGame);
 			var lobbyPlayersList = $firebaseObject(lobbyPlayersRef);
 			var lobbyPlayersArray = $firebaseArray(lobbyPlayersRef.child(firebaseUser.uid));
 			$rootScope.players = lobbyPlayersList;
@@ -186,7 +217,7 @@ app.controller('lobbiesController', ['$scope', '$timeout', '$rootScope', 'fireba
 				$rootScope.activeLobby = $cookies.getObject('lobby').lobby.user;
 			}
 
-			var lobbiesRef = rootRef.ref('lobbies');
+			var lobbiesRef = rootRef.ref('lobbies').child(selectedGame);
 			var lobbyPlayerRef = lobbiesRef.child(firebaseUser.uid);
 			var myLobbyObj = $firebaseObject(lobbyPlayerRef);
 
@@ -212,12 +243,12 @@ app.controller('lobbiesController', ['$scope', '$timeout', '$rootScope', 'fireba
 			});
 
 			$scope.removeLobby = function() {
-				var ref = rootRef.ref('lobbies/'+firebaseUser.uid);
+				var ref = rootRef.ref('lobbies/'+selectedGame+'/'+firebaseUser.uid);
 				lobbiesList.$remove(lobbiesList.$getRecord(firebaseUser.uid)).then(function() {
 					$rootScope.activeLobby = '';
 					$cookies.remove('lobby');
 				});
-				rootRef.ref('lobby_players').child(firebaseUser.uid).remove();
+				rootRef.ref('lobby_players/'+selectedGame).child(firebaseUser.uid).remove();
 			};
 
 			$scope.open = function(key, title) {
@@ -283,10 +314,11 @@ app.controller('joinLobbyModalController', ['$rootScope', '$scope', '$firebaseAr
 app.controller('addNewModalController', ['$scope', '$timeout', '$firebaseArray', '$rootScope', '$uibModalInstance', '$cookies',  function($scope, $timeout, $firebaseArray, $rootScope, $uibModalInstance, $cookies) {
 
 	var currentUser = $rootScope.currentUser;
+	var selectedGame = $rootScope.selectedGame;
 	var rootRef = firebase.database();
-	var lobbyRef = rootRef.ref('lobbies').child(currentUser);
+	var lobbyRef = rootRef.ref('lobbies/'+selectedGame).child(currentUser);
 
-	var lobbiesRef = rootRef.ref('lobbies');
+	var lobbiesRef = rootRef.ref('lobbies'+selectedGame);
 	var lobbiesList = $firebaseArray(lobbiesRef);
 
 	$scope.lobby = {};

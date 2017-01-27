@@ -5,9 +5,7 @@
 			<div class="mobile-platform-filter-list" ng-controller="labelBtnController">
 				<div class="btn-group filter-platforms">
 					<label class="btn active" ng-model="filter_platform" uib-btn-radio="''" ng-click="setPlatform(filter_platform)">All</label>
-					<label class="btn" ng-model="filter_platform" uib-btn-radio="'ps4'" ng-click="setPlatform(filter_platform)">PS4</label>
-					<label class="btn" ng-model="filter_platform" uib-btn-radio="'xbox'" ng-click="setPlatform(filter_platform)">XBOX</label>
-					<label class="btn" ng-model="filter_platform" uib-btn-radio="'pc'" ng-click="setPlatform(filter_platform)">PC</label>
+					<label ng-repeat="availablePlatform in availablePlatforms" ng-model="filter_platform" uib-btn-radio="'{{ availablePlatform }}'" ng-click="setPlatform(filter_platform)" class="btn">{{ availablePlatform }}</label>
 				</div>
 			</div>
 		</div>
@@ -42,9 +40,7 @@
 			<div class="pull-right platform-filter-list" ng-controller="labelBtnController">
 				<div class="btn-group filter-platforms">
 					<label class="btn active" ng-model="filter_platform" uib-btn-radio="''" ng-click="setPlatform(filter_platform)">All</label>
-					<label class="btn" ng-model="filter_platform" uib-btn-radio="'ps4'" ng-click="setPlatform(filter_platform)">PS4</label>
-					<label class="btn" ng-model="filter_platform" uib-btn-radio="'xbox'" ng-click="setPlatform(filter_platform)">XBOX</label>
-					<label class="btn" ng-model="filter_platform" uib-btn-radio="'pc'" ng-click="setPlatform(filter_platform)">PC</label>
+					<label ng-repeat="platform in availablePlatforms" ng-model="filter_platform" uib-btn-radio="'{{ platform }}'" ng-click="setPlatform(filter_platform)" class="btn">{{ platform }}</label>
 				</div>
 			</div>
 			<div class="clearfix"></div>
