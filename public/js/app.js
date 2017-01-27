@@ -278,11 +278,14 @@ app.controller('joinLobbyModalController', ['$rootScope', '$scope', '$firebaseAr
 
 }]);
 
-app.controller('addNewModalController', ['$scope', '$rootScope', '$uibModalInstance', '$cookies',  function($scope, $rootScope, $uibModalInstance, $cookies) {
+app.controller('addNewModalController', ['$scope', '$timeout', '$firebaseArray', '$rootScope', '$uibModalInstance', '$cookies',  function($scope, $timeout, $firebaseArray, $rootScope, $uibModalInstance, $cookies) {
 
 	var currentUser = $rootScope.currentUser;
 	var rootRef = firebase.database();
 	var lobbyRef = rootRef.ref('lobbies').child(currentUser);
+
+	var lobbiesRef = rootRef.ref('lobbies');
+	var lobbiesList = $firebaseArray(lobbiesRef);
 
 	$scope.lobby = {};
 	$scope.lobby.description = '';
@@ -317,6 +320,15 @@ app.controller('addNewModalController', ['$scope', '$rootScope', '$uibModalInsta
 		};
 
 		$cookies.putObject('lobby', cookieObj, { 'expires': expireDate });
+
+		$timeout(function() {
+			var ref = rootRef.ref('lobbies/'+$rootScope.currentUser);
+			lobbiesList.$remove(lobbiesList.$getRecord($rootScope.currentUser)).then(function() {
+				$rootScope.activeLobby = '';
+				$cookies.remove('lobby');
+			});
+			rootRef.ref('lobby_players').child($rootScope.currentUser).remove();
+		}, 7200000); /* 7200000 = 2 hours */
 		
 		// reset the form
 		$uibModalInstance.close();

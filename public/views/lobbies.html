@@ -99,7 +99,7 @@
 					</div>
 				</div>
 			</li>
-			<li class="list-group-item lobby animated animation" ng-if="lobby.lobby_owner != currentUser" ng-repeat="(key, lobby) in lobbies | filter: filter_platform | filter: filter_mode | filter: filter_mic | orderBy: 'lobby.date' | limitTo: limit">
+			<li class="list-group-item lobby animated animation" ng-if="lobby.lobby_owner != currentUser" ng-repeat="(key, lobby) in lobbies | filter: filter_platform | filter: filter_mode | filter: filter_mic | orderBy: '-date' | limitTo: limit">
 				<div class="media">
 					<div class="media-body">
 						<div class="top">
