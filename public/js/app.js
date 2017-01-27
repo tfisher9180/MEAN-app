@@ -75,7 +75,9 @@ app.controller('test', ['$scope', '$rootScope', '$routeParams', '$uibModal', fun
 			templateUrl: '/views/startLobbyModal.html',
 			controller: 'startLobbyModalController'
 		});
-	};
+	}
+
+
 
 }]);
 
@@ -85,22 +87,57 @@ app.controller('filterController', ['$scope', function($scope) {
 
 }]);
 
-app.controller('startLobbyModalController', ['$scope', '$rootScope', '$uibModalInstance', function($scope, $rootScope, $uibModalInstance) {
+app.controller('startLobbyModalController', ['$scope', '$rootScope', '$uibModalInstance', '$cookies',  function($scope, $rootScope, $uibModalInstance, $cookies) {
+
+	var currentUser = $rootScope.currentUser;
+	var rootRef = firebase.database();
+	var lobbyRef = rootRef.ref('lobbies').child(currentUser);
 
 	$scope.selectedPlatform = {};
 	$scope.selectedMode = {};
 
 	$scope.close = function() {
 		$uibModalInstance.close();
-	};
+	}
 
 	$scope.setPlatform = function(platform) {
 		$scope.selectedPlatform = platform;
-	};
+	}
 
 	$scope.setMode = function(mode) {
 		$rootScope.mode = mode;
-	};
+	}
+
+	$scope.add = function() {
+		var expireDate = new Date();
+		expireDate.setHours(expireDate.getHours() + 2);
+		lobbyRef.set({
+			date: firebase.database.ServerValue.TIMESTAMP,
+			expires: expireDate.getTime(),
+			platform: $scope.selectedPlatform.value,
+			game_mode: $scope.selectedMode.value,
+			title: $scope.title,
+			description: $scope.description,
+			mic: $scope.mic,
+			lobby_owner: currentUser
+		});
+
+		$rootScope.activeLobby = currentUser;
+
+		var cookieObj = {
+			lobby: {
+				user: currentUser
+			}
+		};
+
+		$cookies.putObject('lobby', cookieObj, { 'expires': expireDate });
+		
+		// reset the form
+		$uibModalInstance.close();
+		$scope.lobby = {};
+		$scope.addForm.$setPristine();
+		$scope.addForm.$setUntouched();
+	}
 
 
 }]);

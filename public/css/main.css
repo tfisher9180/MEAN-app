@@ -380,7 +380,11 @@ input[name="search"] {
 }
 
 /* == CUSTOM CHECKBOX == */
-
+@font-face {
+  font-family: 'Flat-UI-Icons';
+  src: url('../fonts/glyphicons/flat-ui-icons-regular.eot');
+  src: url('../fonts/glyphicons/flat-ui-icons-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons/flat-ui-icons-regular.woff') format('woff'), url('../fonts/glyphicons/flat-ui-icons-regular.ttf') format('truetype'), url('../fonts/glyphicons/flat-ui-icons-regular.svg#flat-ui-icons-regular') format('svg');
+}
 .checkbox {
   position: relative;
   transition: color 0.25s linear;
@@ -390,13 +394,23 @@ input[name="search"] {
 input[type="checkbox"].custom-checkbox {
   outline: none!important;
   opacity: 0;
-  position: absolute;
+  position: relative;
+  vertical-align: middle;
   padding: 0;
   margin: 0;
   left: 0;
   top: 0;
   width: 20px;
   height: 20px;
+}
+.checkbox input[type="checkbox"].custom-checkbox:checked + .icons .icon-checked {
+  opacity: 1;
+  -webkit-filter: none;
+  filter: none;
+  color: #1abc9c;
+}
+.checkbox input[type="checkbox"].custom-checkbox:checked + .icons .icon-unchecked {
+  opacity: 0;
 }
 .checkbox .icons {
   color: #bdc3c7;
@@ -411,6 +425,16 @@ input[type="checkbox"].custom-checkbox {
   font-size: 20px;
   cursor: pointer;
 }
+.checkbox .icon-unchecked:before, .checkbox .icon-checked:before {
+  font-family: 'Flat-UI-Icons';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 .checkbox .icon-unchecked {
   display: inline-table;
   position: absolute;
@@ -423,8 +447,23 @@ input[type="checkbox"].custom-checkbox {
   filter: none;
   transition: color 0.25s linear;
 }
+.checkbox .icon-unchecked:before {
+  content: "\e60d";
+}
 .checkbox .icon-checked {
-  
+  opacity: 0;
+  display: inline-table;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: transparent;
+  margin: 0;
+  -webkit-filter: none;
+  filter: none;
+  transition: color 0.25s linear;
+}
+.checkbox .icon-checked:before {
+  content: "\e60e";
 }
 .checkbox input[type="checkbox"].custom-checkbox:checked + .icons {
   color: #1abc9c;
