@@ -167,13 +167,22 @@ app.factory('gameInfo', function() {
 			if (game == 'cod-infinite-warfare') {
 				gameInfo = {
 					fullName: 'COD: Infinite Warfare',
-					platforms: ['PS4', 'XBOX', 'PC']
+					platforms: ['PS4', 'XBOX', 'PC'],
+					modes: ['Multiplayer', 'Zombies'],
+					filters: {
+						Mode: ['Multiplayer', 'Zombies']
+					}
 				} 
 			}
 			if (game == 'overwatch') {
 				gameInfo = {
 					fullName: 'Overwatch: Origins Edition',
-					platforms: ['PS4', 'XBOX', 'PC']
+					platforms: ['PS4', 'XBOX', 'PC'],
+					modes: ['Normal', 'Arcade', 'Competitive'],
+					filters: {
+						Mode: ['Normal', 'Arcade', 'Competitive'],
+						Role: ['Offense', 'Support', 'Tank']
+					}
 				}
 			}
 			return gameInfo;
@@ -191,7 +200,9 @@ app.controller('lobbiesController', ['gameInfo', '$routeParams', '$scope', '$tim
 
 	$scope.lobby = {};
 	$scope.game = gameInfo.fullName;
-	$scope.availablePlatforms = gameInfo.platforms;
+	$rootScope.availablePlatforms = gameInfo.platforms;
+	$rootScope.filters = gameInfo.filters;
+	$rootScope.modes = gameInfo.modes;
 	$scope.limit = 10;
 
 	$rootScope.currentTime = new Date();

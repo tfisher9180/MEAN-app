@@ -8,19 +8,16 @@
 							<h3 class="form-section-header"><span class="form-step">1</span>Game Details</h3>
 							<div class="form-group">
 								<label class="control-label">Platform</label>
-								<select class="form-control" name="platform" ng-model="lobby.platform" required>
-									<option value="{{ undefined }}"></option>
-									<option value="PS4">PS4</option>
-									<option value="XBOX">XBOX</option>
-									<option value="PC">PC</option>
+								<select class="form-control" ng-model="lobby.platform" required>
+									<option ng-value=""></option>
+									<option ng-repeat="platform in availablePlatforms" value="{{ platform }}">{{ platform }}</option>
 								</select>
 							</div>
 							<div class="form-group">
 								<label class="control-label">Game Mode</label>
 								<select class="form-control" name="mode" ng-model="lobby.mode" required>
-									<option value="{{ undefined }}"></option>
-									<option value="Multiplayer">Multiplayer</option>
-									<option value="Zombies">Zombies</option>
+									<option ng-value=""></option>
+									<option ng-repeat="mode in modes" value="{{ mode }}">{{ mode }}</option>
 								</select>
 							</div>
 						</div>
@@ -51,7 +48,7 @@
 								<textarea name="description" class="form-control" ng-model="lobby.description" rows="5"></textarea>
 							</div>
 							<div class="checkbox">
-								<label class="col-sm-8 col-sm-offset-2">
+								<label class="col-sm-8">
 									<input type="checkbox" name="mic" ng-model="lobby.mic" value="true">Is voice required?
 								</label>
 							</div>

@@ -139,12 +139,11 @@
 		<div class="filter">
 			<h4 class="page-header">Filter</h4>
 			<form>
-				<div class="form-group">
-					<label class="control-label">Game Mode</label>
+				<div ng-repeat="(key, value) in filters" class="form-group">
+					<label class="control-label">{{ key }}</label>
 					<select class="form-control input-sm" ng-model="filter_mode">
-						<option value="{{ undefined }}"></option>
-						<option value="multiplayer">Multiplayer</option>
-						<option value="zombies">Zombies</option>
+						<option value="">All</option>
+						<option ng-repeat="item in value" value="{{ item }}">{{ item }}</option>
 					</select>
 				</div>
 				<div class="checkbox">
