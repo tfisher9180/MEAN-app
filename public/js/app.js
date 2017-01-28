@@ -44,9 +44,25 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 			templateUrl: '/views/home.html', // key/value syntax ... { is an object } ... key could also be considered a method
 			controller: 'homeController'
 		}).
+		when('/404', {
+			templateUrl: '/views/404.html',
+			controller: '404Controller'
+		}).
 		when('/:game', {
 			templateUrl: '/views/lobbies.html',
-			controller: 'lobbiesController'/*,
+			controller: 'lobbiesController',
+			resolve: {
+				"check": ['gameInfo', '$route', '$location', function(gameInfo, $route, $location) {
+					var list = gameInfo.list();
+					if (list.indexOf($route.current.params.game) < 0) {
+						// not a game in our list
+						$location.path('/404');
+					} else {
+
+					}
+				}]
+			}
+			/*,
 			resolve: {
 				// controller will not be loaded until $requireSignIn resolves
 				"currentAuth": ['firebaseAuth', function(firebaseAuth) {
@@ -55,10 +71,6 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 					// fixed a problem here. Originally was calling 'return Authentication.$requireSignIn();' however the $requireSignIn method is not attached to the factory, it's attached to the 'var auth' INSIDE of the factory. In order to get this to work had to create a new method inside of the factory called currentAuth(), which has access to the 'var auth'. Seeing this, we can abstract the creation of the auth var into its own factory and require it on the Authentication factory AND here.
 				}]
 			}*/	// angularJS feature, a list of dependencies that the $routeProvider service will wait for (until they're resolved). If the promises are resolved successfully, then everything will continue as normal, but if any are rejected then it creates an event called route change error and the controller will NOT be instantiated.
-		}).
-		when('/overwatch', {
-			templateUrl: '/views/lobbies.html',
-			controller: 'lobbiesController'
 		}).
 		otherwise({
 			redirectTo: '/'
@@ -72,6 +84,10 @@ app.controller('homeController', ['$scope', '$rootScope', function($scope, $root
 	$rootScope.page = 'home';
 
 }]);
+
+app.controller('404Controller', function() {
+
+});
 
 // Factory to return the $firebaseAuth service. Abstracted this into it's own factory so that the $routeProvider resolve property could immediately call the $requireSignIn helper method instead of having to create a new function in the userController that had access to the 'var auth = $firebaseAuth();'
 app.factory('firebaseAuth', ['$firebaseAuth', function($firebaseAuth) {
@@ -162,6 +178,10 @@ app.controller('userController', ['$scope', '$rootScope', 'Authentication', '$co
 app.factory('gameInfo', function() {
 
 	return {
+		list: function() { 
+			var gameList = ['overwatch', 'cod-infinite-warfare'];
+			return gameList;
+		},
 		get: function(game) {
 			var gameInfo;
 			if (game == 'cod-infinite-warfare') {
