@@ -10,7 +10,7 @@ html {
 body {
   min-height: 100%;
   position: relative;
-  font-family: 'Arial', "Helvetica Neue", Helvetica, sans-serif;
+  font-family: 'Droid Sans', 'Arial', "Helvetica Neue", Helvetica, sans-serif;
   font-size: 13px;
   line-height: 1.3em;
   color: #242729;
@@ -199,19 +199,23 @@ p.viewing {
 */
 
 #home-header {
-  background: linear-gradient(rgba(60, 60, 61, 0.8), rgba(60, 60, 61, 0.85)), url('../img/cover_art/home-header.jpeg');
+  background: linear-gradient(rgba(60, 60, 61, 0.825), rgba(60, 60, 61, 0.95)), url('../img/cover_art/home-header.jpeg');
   background-position: center right;
   background-repeat: no-repeat;
   background-size: cover;
-  margin-top: -50px; /* same height as navbar */
+  margin-top: -65px; /* same height as navbar */
+  border-bottom: 5px solid #222222;
 }
 #home-header .intro {
   padding: 20vh 0;
+  margin-left: 50px;
 }
 #home-header .tagtitle {
   letter-spacing: 5px;
   text-transform: uppercase;
-  color: #9c9fa1;
+  color: rgba(156, 159, 161, 0.6);
+  margin-bottom: 0;
+  font-weight: bold;
 }
 #home-header .heading {
   color: #fff;
@@ -219,14 +223,15 @@ p.viewing {
   margin: 0;
   font-weight: bold;
   line-height: 1.5;
+  letter-spacing: 4px;
 }
 #home-header .intro-text {
-  color: #9c9fa1;
+  color: rgba(156, 159, 161, 0.8);
   margin-top: 10px; /* hr above this has margin-bottom: 20px; */
   margin-bottom: 30px;
 }
 #home-header hr {
-  border-color: #9c9fa1;
+  border-color: rgba(156, 159, 161, 0.2);
 }
 #home-header .feature-list {
   margin-bottom: 0;
@@ -265,6 +270,25 @@ p.viewing {
   background-repeat: no-repeat;
   background-size: cover;
 }
+#games {
+  background-color: #222227;
+  padding: 5vh 0;
+}
+#games .header {
+  color: #fff;
+  font-weight: bold;
+  margin: 0;
+  margin-bottom: 30px;
+}
+#games .col-1-5 {
+  width: 14.28571428571429%;
+  padding-left: 15px;
+  padding-right: 15px;
+  display: inline-block;
+}
+#games .col-1-5:first-child {
+  margin-left: 15px;
+}
 
 /* 
 * =========== END HOME STYLES =========== 
@@ -278,8 +302,8 @@ p.viewing {
 */
 
 .navbar {
-  min-height: 50px;
-  height: 50px;
+  min-height: 65px;
+  height: 65px;
   margin-bottom: 0;
 }
 .navbar-default {
@@ -288,7 +312,7 @@ p.viewing {
   border-radius: 0;
 }
 .navbar-default .navbar-nav > li > a {
-  line-height: 20px; /* 30px less than navbar height */
+  line-height: 35px; /* 30px less than navbar height */
   color: #777;
 }
 .navbar-default .navbar-nav > li > a:hover {
@@ -301,7 +325,7 @@ p.viewing {
 }
 .navbar-brand {
   font-weight: bold;
-  line-height: 20px; /* 30px less than navbar height */
+  line-height: 35px; /* 30px less than navbar height */
   text-transform: uppercase;
 }
 .partridge-logo {
@@ -517,6 +541,9 @@ p.viewing {
 @media (max-width: 768px) {
   body {
     padding-bottom: 100px;
+  }
+  #home-header .intro {
+    margin-left: 0;
   }
   .narrower {
     padding-left: 15px!important;
