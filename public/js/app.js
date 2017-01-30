@@ -48,6 +48,10 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 			templateUrl: '/views/404.html',
 			controller: '404Controller'
 		}).
+		when('/about', {
+			templateUrl: '/views/about.html',
+			controller: 'aboutController'
+		}).
 		when('/:game', {
 			templateUrl: '/views/lobbies.html',
 			controller: 'lobbiesController',
@@ -86,6 +90,10 @@ app.controller('homeController', ['$scope', '$rootScope', function($scope, $root
 }]);
 
 app.controller('404Controller', function() {
+
+});
+
+app.controller('aboutController', function() {
 
 });
 

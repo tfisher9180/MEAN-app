@@ -43,13 +43,16 @@
 			<nav ng-include="'views/nav.html'"></nav>
 		</header>
 		<div class="page">
-			<main class="cf" ng-view></main>
+			<main ng-view autoscroll="true"></main>
 		</div>
-		<!--<footer>
-			<div class="container narrower">
+		<footer>
+			<div class="container">
 				<div ng-include="'views/footer.html'"></div>
 			</div>
-		</footer>-->
+		</footer>
+		<div class="bottom-space">
+			<p class="text-muted">&copy; Victory Rush 2017. All rights reserved.</p>
+		</div>
 
 		<script src="./libs/jquery/dist/jquery.min.js"></script>
 		<script src="./libs/bootstrap/dist/js/bootstrap.min.js"></script>

@@ -19,13 +19,6 @@ body {
 a {
   text-decoration: none!important;
 }
-footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  opacity: 0.45;
-}
 .fa-gamepad {
   font-size: 1.75em;
 }
@@ -249,30 +242,50 @@ p.viewing {
   color: #9c9fa1;
 }
 .img-wrapper {
-  height: 200px;
+  height: 220px;
   width: 100%;
-}
-.img-wrapper-cod-infinite-warfare {
-  background-image: url('../img/cover_art/cod-infinite-warfare.jpeg');
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
+  position: relative;
+  border-bottom: 3px solid #3c3c3d;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  transition: all 0.2s ease;
+}
+.img-wrapper:hover {
+  -webkit-box-shadow: 1px 1px 50px 1px rgba(0,0,0,0.75);
+  -moz-box-shadow: 1px 1px 50px 1px rgba(0,0,0,0.75);
+  box-shadow: 1px 1px 50px 1px rgba(0,0,0,0.75);
+  transform: scale(1.1);
+  border-color: #ff4c21;
+}
+.img-wrapper-cod-infinite-warfare {
+  background-image: url('../img/cover_art/cod-infinite-warfare.jpg');
 }
 .img-wrapper-overwatch {
   background-image: url('../img/cover_art/overwatch.jpg');
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
 }
 .img-wrapper-league-of-legends {
   background-image: url('../img/cover_art/league-of-legends.jpg');
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
+}
+.img-wrapper-cod-remastered {
+  background-image: url('../img/cover_art/cod-remastered.jpeg');
+}
+.img-wrapper-league-of-legends {
+  background-image: url('../img/cover_art/league-of-legends.jpg');
+}
+.img-wrapper-battlefield-one {
+  background-image: url('../img/cover_art/battlefield-one.jpg');
+}
+.img-wrapper-rainbow-six-siege {
+  background-image: url('../img/cover_art/rainbow-six-siege-2.jpg');
 }
 #games {
-  background-color: #222227;
-  padding: 5vh 0;
+  background-color: #19191B;
+  padding-top: 7vh;
+  padding-bottom: 14vh;
 }
 #games .header {
   color: #fff;
@@ -286,12 +299,247 @@ p.viewing {
   padding-right: 15px;
   display: inline-block;
 }
-#games .col-1-5:first-child {
-  margin-left: 15px;
+@media (max-width: 768px) {
+  #games .col-1-5 {
+    width: 40%;
+    padding: 0;
+  }
+  #games .col-1-5:first-child {
+    margin-left: 0px!important;
+  }
+  #games .col-1-5:last-child {
+    margin-right: 0px!important;
+  }
+}
+#games .overlay {
+  position: absolute; 
+  background-color: rgba(60, 60, 61, 0.4); 
+  z-index: 1000; 
+  height: 100%; 
+  width: 100%;
+  top: 0;
+}
+#games .game-title {
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  z-index: 1001;
+  color: #fff;
+  font-weight: bold;
+  width: 100%;
+}
+#games .progress {
+  position: relative;
+  margin-bottom: 0;
+  border-radius: 0;
+  height: 30px;
+  z-index: 1001;
+  background-color: rgba(60, 60, 61, 0.9);
+}
+#games .progress-bar {
+  min-width: 2em;
+}
+#games .progress-bar.thirtyto49 {
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#4dc201+0,b5e400+90 */
+  background: #4dc201; /* Old browsers */
+  background: -moz-linear-gradient(left,  #4dc201 0%, #b5e400 90%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(left,  #4dc201 0%,#b5e400 90%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to right,  #4dc201 0%,#b5e400 90%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4dc201', endColorstr='#b5e400',GradientType=1 ); /* IE6-9 */
+}
+#games .progress-bar.zeroto29 {
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#01a5fc+0,3ddbda+87 */
+  background: #01a5fc; /* Old browsers */
+  background: -moz-linear-gradient(left,  #01a5fc 0%, #3ddbda 87%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(left,  #01a5fc 0%,#3ddbda 87%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to right,  #01a5fc 0%,#3ddbda 87%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#01a5fc', endColorstr='#3ddbda',GradientType=1 ); /* IE6-9 */
+}
+#games .progress-bar.fiftyto100 {
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#fe312e+0,fc6f03+87 */
+  background: #fe312e; /* Old browsers */
+  background: -moz-linear-gradient(left,  #fe312e 0%, #fc6f03 87%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(left,  #fe312e 0%,#fc6f03 87%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to right,  #fe312e 0%,#fc6f03 87%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fe312e', endColorstr='#fc6f03',GradientType=1 ); /* IE6-9 */
+}
+#social-media {
+  background-color: #2E2F31;
+  padding: 4vh 0;
+  border: 1px solid #202020;
+  -webkit-box-shadow: inset 0px -4px 4px -2px rgba(60,60,61,1);
+  -moz-box-shadow: inset 0px -4px 4px -2px rgba(60,60,61,1);
+  box-shadow: inset 0px -4px 4px -2px rgba(60,60,61,1);
+  -webkit-box-shadow: 0px 10px 20px -4px rgba(0,0,0,0.9);
+  -moz-box-shadow: 0px 10px 20px -4px rgba(0,0,0,0.9);
+  box-shadow: 0px 10px 20px -4px rgba(0,0,0,0.9);
+}
+#social-media .tagtitle {
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: rgba(156, 159, 161, 0.6);
+  margin-bottom: 0;
+  font-weight: bold;
+}
+#social-media .heading {
+  color: #fff;
+  text-transform: uppercase;
+  margin: 0;
+  font-weight: bold;
+  line-height: 1.5;
+  letter-spacing: 4px;
+}
+#social-media .media-left i {
+  color: rgba(156, 159, 161, 0.6);
+  font-size: 2em;
+}
+#social-media .social-media-icon-list i {
+  color: #262628;
+  transition: color 0.2s ease;
+}
+#social-media .social-media-icon-list i:hover {
+  color: #fff;
 }
 
 /* 
 * =========== END HOME STYLES =========== 
+--------------------------------------------------------
+*/
+
+/* 
+--------------------------------------------------------
+* =========== FOOTER STYLES =========== 
+*/
+
+footer {
+  background-color: #212224;
+  border-bottom: 6px solid #ff4c21;
+  padding: 8vh 0;
+}
+footer p {
+  color: rgba(156, 159, 161, 0.6);
+  margin: 0;
+}
+footer .author {
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 10px;
+}
+footer .logo {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+footer .heading {
+  color: #fff;
+  text-transform: uppercase;
+  margin: 0;
+  font-weight: bold;
+  line-height: 1.5;
+  letter-spacing: 4px;
+}
+footer hr {
+  border-color: #ff4c21;
+  width: 2em;
+  margin-left: 0;
+  margin-right: 0;
+}
+footer .nav li a {
+  padding-left: 0;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  color: rgba(156, 159, 161, 0.75);
+  transition: all 0.2s linear;
+}
+footer .nav li a:hover, footer .nav li a:focus, footer .nav li a:active {
+  background-color: transparent;
+  color: #fff;
+}
+.bottom-space {
+  position: relative;
+  height: 8vh;
+  background-color: #212224;
+}
+.bottom-space p {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.3;
+  text-align: center;
+}
+
+/* 
+* =========== END FOOTER STYLES =========== 
+--------------------------------------------------------
+*/
+
+/* 
+--------------------------------------------------------
+* =========== ABOUT STYLES =========== 
+*/
+
+#about-header {
+  background: linear-gradient(rgba(60, 60, 61, 0.825), rgba(60, 60, 61, 0.95)), url('../img/cover_art/about-header.jpeg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin-top: -65px; /* same height as navbar */
+  border-bottom: 5px solid #222222;
+}
+#about-header .intro {
+  padding: 20vh 0;
+}
+#about-header .tagtitle {
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: rgba(156, 159, 161, 0.6);
+  margin-bottom: 0;
+  font-weight: bold;
+}
+#about-header .heading {
+  color: #fff;
+  text-transform: uppercase;
+  margin: 0;
+  font-weight: bold;
+  line-height: 1.5;
+  letter-spacing: 4px;
+}
+#about {
+  background-color: #19191B;
+  padding: 10vh 0;
+}
+#about .about-text {
+  color: rgba(156, 159, 161, 0.6);
+  line-height: 1.5;
+}
+#about .heading {
+  color: #fff;
+  text-transform: uppercase;
+  margin: 0;
+  font-weight: bold;
+  line-height: 1.5;
+  letter-spacing: 4px;
+  margin-bottom: 10px;
+}
+.about-container {
+  padding-left: 150px;
+  padding-right: 150px;
+}
+@media (max-width: 768px) {
+  .about-container {
+    padding: 0 30px;
+  }
+  #about .about-text {
+    font-size: 16px;
+  }
+  #about .cta-button {
+    text-align: center;
+    margin-top: 15px;
+  }
+}
+
+/* 
+* =========== END ABOUT STYLES =========== 
 --------------------------------------------------------
 */
 
@@ -539,9 +787,6 @@ p.viewing {
 */
 
 @media (max-width: 768px) {
-  body {
-    padding-bottom: 100px;
-  }
   #home-header .intro {
     margin-left: 0;
   }

@@ -9,4 +9,10 @@ $(document).ready(function() {
 		e.preventDefault();
 	});
 
+	$('#btn-browse-games').click(function() {
+		$('html, body').animate({
+			scrollTop: $('#games').offset().top
+		}, 500);
+	});
+
 });
