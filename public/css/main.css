@@ -595,6 +595,35 @@ footer .nav li a:hover, footer .nav li a:focus, footer .nav li a:active {
 --------------------------------------------------------
 * =========== LOBBY STYLES =========== 
 */
+
+.lobby-header {
+  margin-top: -65px; /* same height as navbar */
+  border-bottom: 5px solid #222222;
+}
+#lobby-header.cod-infinite-warfare {
+  background: linear-gradient(rgba(60, 60, 61, 0.825), rgba(60, 60, 61, 0.95)), url('../img/cover_art/cod-infinite-warfare-lobby-header.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+#lobby-header .intro {
+  padding: 15vh 0;
+}
+#lobby-header .tagtitle {
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: rgba(156, 159, 161, 0.6);
+  margin-bottom: 0;
+  font-weight: bold;
+}
+#lobby-header .heading {
+  color: #fff;
+  text-transform: uppercase;
+  margin: 0;
+  font-weight: bold;
+  line-height: 1.5;
+  letter-spacing: 4px;
+}
 .subheader {
   position: relative;
   margin-top: 40px;

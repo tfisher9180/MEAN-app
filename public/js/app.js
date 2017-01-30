@@ -195,6 +195,7 @@ app.factory('gameInfo', function() {
 			if (game == 'cod-infinite-warfare') {
 				gameInfo = {
 					fullName: 'COD: Infinite Warfare',
+					className: 'cod-infinite-warfare',
 					platforms: ['PS4', 'XBOX', 'PC'],
 					modes: ['Multiplayer', 'Zombies'],
 					filters: {
@@ -205,6 +206,7 @@ app.factory('gameInfo', function() {
 			if (game == 'overwatch') {
 				gameInfo = {
 					fullName: 'Overwatch: Origins Edition',
+					className: 'overwatch',
 					platforms: ['PS4', 'XBOX', 'PC'],
 					modes: ['Normal', 'Arcade', 'Competitive'],
 					filters: {
@@ -228,6 +230,7 @@ app.controller('lobbiesController', ['gameInfo', '$routeParams', '$scope', '$tim
 
 	$scope.lobby = {};
 	$scope.game = gameInfo.fullName;
+	$scope.gameClass = gameInfo.className;
 	$rootScope.availablePlatforms = gameInfo.platforms;
 	$rootScope.filters = gameInfo.filters;
 	$rootScope.modes = gameInfo.modes;
